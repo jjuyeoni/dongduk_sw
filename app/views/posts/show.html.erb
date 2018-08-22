@@ -1,0 +1,307 @@
+<style>
+    .map_wrap {position:relative;width:100%;height:350px;}
+    .title {font-weight:bold;display:block;}
+    .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
+    #centerAddr {display:block;margin-top:2px;font-weight: normal;}
+    .bAddr {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+    .btn{background-color: rgba(0, 0, 0, 0);}
+    td {padding:15px; text-align:center;}
+    th {padding:15px; text-align:center;}
+    tr {text-align:center; }
+    #wb {rgba(255, 255, 255, 0.5)}
+    .hi{width:150px; height:auto; margin-right:10px;vertical-align:middle;display:inline}
+    #fr{float:right;padding:0px;}
+    table{font-size:10pt;}
+    
+.modal-mycontent {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    outline: 0;
+}    
+
+
+</style>
+
+
+<div class="container" style="font-family: 'Gothic A1', sans-serif;">
+
+  <%= link_to 'Back', posts_path %><br><br>
+  
+  <table>
+      <tr align="center">
+          <th colspan="2" width="600" style="background-color:#DCDCDC"> [ <%= @post.category %> ] <%= @post.title %> </th>
+      </tr>
+      <tr>
+          <td rowspan="4" width="60%" height="auto"> <img src="/assets/blog-post-1.jpg"></td>
+          <td style="border-bottom:1.5px #DCDCDC solid;height:5%"> 
+              <font  style="float:left;font-weight:bold;font-size:12pt">작성자 : <%= @post.user_id %></font><br>
+              <div style="vertical-align:bottom;float:right;font-size:10pt;padding:0px;margin:10"><%= (@post.created_at + 32400 ).strftime "%Y-%m-%d %H:%M"%></div>
+          </td>
+      </tr>
+      <tr>
+          <td height="50%">
+              <%= @post.content %>
+          </td>
+      </tr>
+      <tr>
+          <td>
+              <ul class="nav nav-tab nav-justified" id="myTab" role="tablist" style="margin:15px">
+               <% @day.each do |d| %> 
+		        <li class="nav-item">
+                 <a class="nav-link <% if d == '일' %>active<%end%>" id="<%=d%>-tab" data-toggle="tab" href="#<%=d%>" role="tab" aria-controls="<%=d%>" aria-selected="true"> <%=d%> </a>
+		        </li>
+	            <% end %>
+              </ul>
+              <div class="tab-content">
+                <% for i in 0..6%>  
+	            <div class="tab-pane <% if @day[i] == '일' %>active<%end%>" id="<%=@day[i]%>" role="tabpanel" aria-labelledby="<%=@day[i]%>-tab">
+		            <% k = 0 %>
+		            <% while  @post.candays[i][k] %>
+                        <%=@post.candays[i][k]%>
+                        <% k += 1 %>
+                    <%end%>
+	            </div>
+                <% end %>
+              </div>
+          </td>
+      </tr>
+      <tr>
+          <td style="border-top:1.5px #DCDCDC solid;height:15%">
+              <% if current_user.id == @post.user_id %>
+                <%= link_to edit_post_path(@post) do %> 
+                    <%= image_tag "edit.png", class:"hi"%>
+                <%end%>
+                <%= link_to post_path(@post), method: :delete, data: { confirm: 'Are you sure?' } do %>
+                    <%= image_tag "dele.png", class:"hi"%>
+                <%end%>
+                <p style="vertical-align:bottom;float:right;font-size:10pt"> <a data-toggle="modal" data-target="#thisapp" style="color:gray">신청서 보기 (<%= @post.applies.size %> )</a></p>
+            <!-- 작성자 외  신청 버튼  & 스크랩 버튼보이게-->
+            <% else %>
+   
+             <% if current_user.is_apply? (@post) %> <!-- 신청 -->
+                 <% if Apply.find_by(user_id: current_user.id, post_id: @post.id).matching%>
+                     <img class="btn-img" src="/assets/matdone.png" width="200" height="auto"><br>
+                 <% else%>
+                 <button data-toggle="modal" data-target="#myModal" style="border:none;background-color:rgba(255, 255, 255, 0);vertical-align:middle">
+                     <img class="btn-img" src="/assets/censin.png" width="200" height="auto" width="200" height="auto"></button>
+                 <%end%>
+            <% else %>
+              <form action='/apply/new/<%= @post.id%>' method='post' style='vertical-align:middle'>
+                  <button class="btn" id="btn" type="submit"><img class="btn-img" src="/assets/sin.png" width="200" height="auto"></button>
+              </form>
+  
+            <% end %>
+            
+            
+            <% if current_user.is_scrap? (@post) %><!-- 스크랩 -->
+             <form action='/post/<%= @post.id%>/scrap' method='post' style="width:100;display:inline;vertical-align:middle">
+               <button class="btn" id="btn" type="submit"><img class="btn-img" src="/assets/censc.png" width="200" height="auto"></button> 
+             </form>
+             <% else %>
+             <form action='/post/<%= @post.id%>/scrap' method='post' style="width:100;display:inline;vertical-align:middle">
+              <button class="btn" id="btn" type="submit"><img class="btn-img" src="/assets/sc.png" width="200" height="auto"></button>
+             </form>
+             <% end %>
+             
+       <%end%>
+          </td>
+      </tr>
+      
+      <tr>
+          <td colspan="2">
+              <h4 style="float:left">위치 정보</h4>
+              <br>
+              <div class="map_wrap">
+                <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+                <div class="hAddr">
+                    <span class="title">지도중심기준 행정동 주소정보</span>
+                    <span id="centerAddr"></span>
+                </div>
+            </div>
+ 
+            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=194dda0c9f26fd6381c1f54652c244e6&libraries=services"></script>
+            <script>
+                var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                    mapOption = { 
+                        center: new daum.maps.LatLng(<%= @post.lat %>, <%= @post.lon %>), // 지도의 중심좌표
+                        level: 1 // 지도의 확대 레벨
+                    };
+
+
+                // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+                var map = new daum.maps.Map(mapContainer, mapOption); 
+
+                // 주소-좌표 변환 객체를 생성합니다
+                var geocoder = new daum.maps.services.Geocoder();
+
+                // 지도 관련 코드 시작 
+                // 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
+                searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+
+                function searchAddrFromCoords(coords, callback) {
+                // 좌표로 행정동 주소 정보를 요청합니다
+                geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback); }
+
+                function searchDetailAddrFromCoords(coords, callback) {
+                // 좌표로 법정동 상세 주소 정보를 요청합니다
+                geocoder.coord2Address(coords.getLng(), coords.getLat(), callback); }
+
+
+                // 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+                function displayCenterInfo(result, status) {
+                    if (status === daum.maps.services.Status.OK) {
+                        var infoDiv = document.getElementById('centerAddr');
+
+                        for(var i = 0; i < result.length; i++) {
+                        // 행정동의 region_type 값은 'H' 이므로
+                        if (result[i].region_type === 'H') {
+                            infoDiv.innerHTML = result[i].address_name;
+                        break;}
+                        }    
+                    }    
+                }
+                // 지도 관련 코드 끝
+
+                // 마커가 표시될 위치입니다 
+                var markerPosition  = new daum.maps.LatLng(<%= @post.lat %>, <%= @post.lon %>); 
+
+                // 마커를 생성합니다
+                var marker = new daum.maps.Marker({position: markerPosition});
+
+                // 마커가 지도 위에 표시되도록 설정합니다
+                marker.setMap(map);
+        </script>
+          </td>
+      </tr>
+  </table>
+  
+</div>
+
+
+
+<% if current_user.id != @post.user_id %>
+<% if @apply != nil %>
+<!-- Modal 신청서 보기 -->
+
+<div id="myModal" class="modal fade" role="dialog" >
+  <div class="modal-dialog modal-lg" role="document">
+      <!-- Modal content-->
+      <div class="modal-mycontent">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <table align="center">
+            <tr>
+                <td colspan="2" style="background-color:#DCDCDC"> <%= @apply.title %></td>
+            </tr>
+            <tr>
+                <td colspan="2"> <%= @apply.content %></td>
+            </tr>
+            <tr>
+                <td colspan="2"> <%= @apply.user_id%></td>
+            </tr>
+            <tr>
+                <td colspan="2"> <%= (@apply.created_at + 32400 ).strftime "%Y-%m-%d %H:%M:%S"%></td>
+            </tr>
+    
+            <tr>
+                <% if @apply.matching %>
+                    <td> 매칭 완료</td>
+                <% else %>
+                <% if current_user.id == @apply.user_id %>
+                <td>
+                     <form action="/apply/edit/<%=@apply.id%>" method='post'>
+                        <button class="btn" id="btn" type="submit"><img class="btn-img" id="hi" src="/assets/edit.png" width="150px" height="auto" ></button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/apply/destroy/<%=@apply.post_id%>" method='post'>
+                        <button class="btn" id="btn" type="submit"><img class="btn-img" id="hi" src="/assets/dele.png" width="150px" height="auto"></button>
+                    </form>
+                </td>
+                <% else %>
+                 <td> 
+                     <form action="/apply/destroy/<%=@apply.post_id%>" method='post'>
+                       <input type="submit" value="거부"/>
+                    </form>
+                 </td>
+                 <td><a href="/post/<%=@apply.post_id%>/apply_accept/<%=@apply.id%>">수락하기</a> </td>
+                <%end%>
+                <%end%>
+            </tr>
+        </table>
+        <br>
+        </div>
+      </div>
+      
+      
+  </div>
+</div>
+<% end %>
+<% else %>
+<div id="thisapp" class="modal fade" role="dialog" >
+  <div class="modal-dialog modal-lg" role="document">
+      <!-- Modal content-->
+      <div class="modal-mycontent">
+        <div class="modal-header">
+            <h1> "<%= @post.title %>"에 작성된 신청서 ( <%=@post.applies.count%> )</h1>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          
+
+<table>
+    <tr>
+        <td> 작성자 </td>
+        <td> 지원서 제목</td>
+        <td> 지원서 내용</td>
+        <td> 작성 시간</td>
+        <td> 매칭 상태</td>
+        <td> &nbsp;</td>
+    </tr>
+    
+    <% @post.applies.each do |a| %>
+    
+    <tr>
+        <td> <%=a.user_id%></td>
+        <td> <%=a.title%></td>
+        <td> <%=a.content%></td>
+        <td> <%=( a.created_at + 32400 ).strftime "%Y-%m-%d %H:%M" %></td>
+        <td> <%=a.matching%></td>
+        <% if a.matching %>
+            <td> <a  role="button">수락 완료</a> </td>
+        <% else %>
+            <td> <a href="/post/<%=@post.id%>/apply_accept/<%=a.id%>" role="button">수락하기</a> </td>
+        <%end%>
+        
+    </tr>
+    <%end%>
+</table>
+        <br>
+        </div>
+      </div>
+      
+      
+  </div>
+</div>
+<% end%>
+
+<hr>
+
+
+<script>
+  $('#myTab a').on('click', function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
+</script>

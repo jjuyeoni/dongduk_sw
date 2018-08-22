@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      function showHide(id) {
+         var obj = document.getElementById(id);
+         if (obj.style.display == 'none')
+           obj.style.display = 'block';
+         else
+           obj.style.display = 'none';
+      }
+      
+      
+    </script>
+
+    <!-- meta -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  
+    <title>주거니받거니</title>
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    
+    <!-- 기본세팅 -건들지마세요 -->
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|Playfair+Display:400,400i,700,700i,900,900i" rel="stylesheet">
+
+    <!-- Bootstrap CSS File -->
+    <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    
+    <!--tooltip CSS File-->
+   <link rel="stylesheet"  href="/assets/default.css" />
+		<link rel="stylesheet" href="/assets/component.css" />
+    
+    <!-- Libraries CSS Files -->
+    <link href="/assets/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="/assets/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/assets/magnific-popup/magnific-popup.css" rel="stylesheet">
+    <link href="/assets/hover/hover.min.css" rel="stylesheet">
+
+    <!-- Main Stylesheet File -->
+    <link href="/assets/style.css" rel="stylesheet">
+    
+    <!-- Responsive css -->
+    <link href="/assets/responsive.css" rel="stylesheet">
+  
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/assets/reunion.png">
+    
+    <!-- fontawesome Icon -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  </head>
+
+  <body>
+
+      <!-- start section navbar -->
+      <nav class="navbar" id="main-nav">
+        <div class="row">
+          <div class="container">
+    
+            <!--<div class="logo col-2">-->
+            <!--  <a href="/">주거니받거니</a>-->
+            <!--</div>-->
+        
+            <div class="responsive"><i data-icon="m" class="ion-navicon-round"></i></div>
+            
+            <ul class="nav-menu list-unstyled">
+              <div class="row">
+              <div class="col-lg-2 middle"><li class="nav-item">
+                <a href="#" class="smoothScroll",  style= "display: inline-block;" >서비스소개</a>
+              </li></div>
+              <div class="col-lg-2 middle"><li style= "display: inline-block; text-align:center">
+                <a href="/match/index"  class="smoothScroll",  style= "display: inline-block">빠른탐색</a>
+              </li></div>
+              <div class="col-lg-4 middle"><li>
+                  <a href="/" class="smoothScroll",  style= "display: inline-block;"><h1 style="font-size:55px; font-weight:700;">주거니받거니</h1></a>
+              </li></div>
+             
+              <% if user_signed_in? %>
+                 <div class="col-lg-2 middle"><li>
+                  <a href="/posts/new"  class="smoothScroll",  style= "display: inline-block;">글작성</a>
+                </li></div>
+                <div class="col-lg-2 middle"><li class="nav-item dropdown">
+                  <a href="#" class="smoothScroll",  style= "display: inline-block;" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <%= current_user.name %>님
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/mypage/mypage" style="display: inline-block;">마이페이지</a>
+                    <%=link_to '로그아웃', destroy_user_session_path, :class => "dropdown-item", method: 'delete' %>
+                  </div>
+                </li></div>
+              <% else %>
+                <div class="col-lg-2 middle"><li>
+                  <%=link_to '회원가입', new_user_registration_path, :class => "smoothScroll",  :style => "display: inline-block;" ,method: 'get' %>
+                </li></div>
+                <div class="col-lg-2 middle"><li>
+                  <%=link_to '로그인', new_user_session_path, :layout => "useer-application", :class => "smoothScroll",  :style => "display: inline-block;" ,method: 'get' %>
+                </li></div>
+              <%end%>
+            </div>
+              <!--<li><a href="#about" class="smoothScroll">About</a></li>-->
+              <!--<li><a href="#portfolio" class="smoothScroll">Portfolio</a></li>-->
+              <!--<li><a href="#journal" class="smoothScroll">Blog</a></li>-->
+              <!--<li><a href="#contact" class="smoothScroll">Contact</a></li>-->
+              
+            </ul>
+    
+          </div>
+        </div>
+      </nav>
+  
+      <!-- End section navbar -->
+
+    <!-- start section header -->
+  <!--<div id="header" class="home" style="position:relative;">-->
+
+  <!--  <div class="container">-->
+  <!--    <div class="header-content">-->
+  <!--      <h1>I'm <span class="typed"></span></h1>-->
+  <!--      <p>designer, developeur, photographer</p>-->
+
+  <!--      <ul class="list-unstyled list-social">-->
+  <!--        <li><a href="#"><i class="ion-social-facebook"></i></a></li>-->
+  <!--        <li><a href="#"><i class="ion-social-twitter"></i></a></li>-->
+  <!--        <li><a href="#"><i class="ion-social-instagram"></i></a></li>-->
+  <!--        <li><a href="#"><i class="ion-social-googleplus"></i></a></li>-->
+  <!--        <li><a href="#"><i class="ion-social-tumblr"></i></a></li>-->
+  <!--        <li><a href="#"><i class="ion-social-dribbble"></i></a></li>-->
+  <!--      </ul>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--</div>-->
+  <!-- End section header -->
+    
+  <!-- start section about us -->    
+  <div id="about" class="paddsection">
+    <div class="container">
+      <%= yield %>
+    </div>
+  </div>
+  <!--end section about us-->
+    
+  
+    <!-- start section footer -->
+    <div id="footer" class="text-center">
+      <div class="container">
+        <div class="socials-media text-center">
+  
+          <ul class="list-unstyled">
+            <li><a href="#"><i class="ion-social-facebook"></i></a></li>
+            <li><a href="#"><i class="ion-social-twitter"></i></a></li>
+            <li><a href="#"><i class="ion-social-instagram"></i></a></li>
+            <li><a href="#"><i class="ion-social-googleplus"></i></a></li>
+            <li><a href="#"><i class="ion-social-tumblr"></i></a></li>
+            <li><a href="#"><i class="ion-social-dribbble"></i></a></li>
+          </ul>
+  
+        </div>
+  
+        <p>&copy; Copyrights Folio. All rights reserved.</p>
+  
+        <div class="credits">
+          <!--
+            All the links in the footer should remain intact.
+            You can delete the links only if you purchased the pro version.
+            Licensing information: https://bootstrapmade.com/license/
+            Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Folio
+          -->
+          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div>
+  
+      </div>
+    </div>
+    <!-- End section footer -->
+  
+  
+    <!-- JavaScript Libraries -->
+    <script src="/assets/jquery/jquery.min.js"></script>
+    <script src="/assets/jquery/jquery-migrate.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/typed/typed.js"></script>
+    <script src="/assets/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/assets/magnific-popup/magnific-popup.min.js"></script>
+    <script src="/assets/isotope/isotope.pkgd.min.js"></script>
+  
+    <!-- Contact Form JavaScript File -->
+    <script src="/assets/contactform.js"></script>
+  
+    <!-- Template Main Javascript File -->
+    <script src="/assets/main.js"></script>
+    <script src="/assets/modernizr.custom.js"></script>
+    <script src="/assets/cbpTooltipMenu.min.js"></script>
+		<script>
+			var menu = new cbpTooltipMenu( document.getElementById( 'cbp-tm-menu' ) );
+		</script>
+  </body>
+</html>

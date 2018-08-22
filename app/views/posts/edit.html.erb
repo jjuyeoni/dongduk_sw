@@ -1,0 +1,108 @@
+<h1>Edit post</h1>
+ 
+<%= form_with model: @post, local: true do |form| %>
+  
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@post.errors.count, "error") %> prohibited
+        this post from being saved:
+      </h2>
+      <ul>
+        <% @post.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <p>
+    <div class="form-group row">
+      <div style="margin-left:10px;"><%= form.select(:category, options_for_select(['게임','코딩','언어','뷰티','운동','음악']),{}, {:class=>"form-control"})%></div>&nbsp;
+      <div style="width:90%;margin:0px"><%= form.text_field :title , class:"form-control", :placeholder => 'title', :style => 'display:inline'%></div>
+    </div>
+  </p>
+ 
+  <p>
+    <%= form.label :content %><br>
+    <%= form.text_area :content , class:"form-control", size: "24x6" %>
+  </p>
+  
+  <p><%= form.label :date %>
+    <div id="dox" class="table-control">
+      <% days = ['일', '월', '화', '수', '목', '금', '토'] %>
+      <% tt = ['오전', '오후', '저녁', '풀타임'] %>
+      <% for i in 0..5 %>
+      
+        <% k = 0 %>
+        <% @tmp = '' %>
+		    <% while  @post.candays[i][k] %>
+          <% @tmp += @post.candays[i][k]%>
+          <% k += 1 %>
+        <%end%>
+         <font <%if i == 0%> color="#DC143C" <% elsif i == 6 %> color="#4169E1" <%end%> ><%= days[i] %></font> &nbsp;
+           <% for j in 0..4 %>
+             <input type="checkbox" name="date[<%= i %>][]" value="<%=tt[j]%>" <% if @tmp.include?"#{tt[j]}" %> checked <%end%>><%=tt[j]%>&nbsp;
+           <% end %>
+           <br>
+      <% end %>
+    </div>
+    </p>
+  
+<div id="map" style="width:100%;height:350px;"></div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=194dda0c9f26fd6381c1f54652c244e6"></script>
+<script>
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new daum.maps.LatLng(<%= @post.lat %>, <%= @post.lon %>), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+    
+// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+var map = new daum.maps.Map(mapContainer, mapOption); 
+
+// 마커가 표시될 위치입니다 
+var markerPosition  = new daum.maps.LatLng(<%= @post.lat %>, <%= @post.lon %>); 
+
+// 마커를 생성합니다
+var marker = new daum.maps.Marker({
+    position: markerPosition
+});
+
+// 마커가 지도 위에 표시되도록 설정합니다
+marker.setMap(map);
+
+// 지도에 클릭 이벤트를 등록합니다
+// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+daum.maps.event.addListener(map, 'click', function(mouseEvent) {        
+
+    // 클릭한 위도, 경도 정보를 가져옵니다 
+    var latlng = mouseEvent.latLng; 
+    
+    // 마커 위치를 클릭한 위치로 옮깁니다
+    marker.setPosition(latlng);
+    
+    // var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+    // message += '경도는 ' + latlng.getLng() + ' 입니다';
+    
+    // var resultDiv = document.getElementById('clickLatlng'); 
+    // resultDiv.innerHTML = message;
+    
+    document.getElementById("post_lat").value = latlng.getLat();
+    document.getElementById("post_lon").value = latlng.getLng();
+});
+  
+
+</script>
+ <p>
+    <%= form.hidden_field :lat %>
+    <%= form.hidden_field :lon %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
+ 
+<%= link_to 'Back', posts_path %>

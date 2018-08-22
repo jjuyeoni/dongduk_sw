@@ -1,0 +1,43 @@
+<h1>실시간 채팅</h1>
+<br><br>
+<div class="row">
+  
+  <div class="col-md-3">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        
+      </div>
+      <div class="panel-body">
+        
+      <a style="color:#6495ED;font-weight:bold;"><i class="fas fa-comments" style="color:#6495ED"></i> 신청받은 ( <%= @badunapp.count %> )</a>
+        <ul>
+          <% @badunapp.each do |a| %>
+            <% @user = User.find(a.user_id) %>
+            <li><%= link_to @user.email, conversations_path(user_id: @user), remote: true, method: :post %></li>
+          <% end %>
+        </ul>
+        
+      <a style="color:#6495ED;font-weight:bold"><i class="fas fa-comments" style="color:#6495ED"></i> 신청한 ( <%= @applies.count %> )</a>
+        <ul>
+          <% @applies.each do |a| %>
+            <% @user = User.find(a.partner) %>
+            <li><%= link_to @user.email, conversations_path(user_id: @user), remote: true, method: :post %></li>
+          <% end %>
+        </ul>
+      </div>
+  
+ 
+      </div>
+    </div>
+  
+  <div class="col-md-9">
+    <ul id="conversations-list">
+      <% @conversations.each do |conversation| %>
+        <%= render 'conversations/conversation', conversation: conversation, user: current_user %>
+      <% end %>
+    </ul>
+  </div>
+
+</div>
+
+

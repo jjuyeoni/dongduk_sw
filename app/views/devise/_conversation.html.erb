@@ -1,0 +1,26 @@
+
+
+<li style="border:1.5px lightgray solid; border-radius:10px;padding:10px;margin-bottom:5px">
+  <div class="panel panel-default" data-conversation-id="<%= conversation.id %>">
+    <div class="panel-heading">
+      <%= link_to conversation.opposed_user(user).email, '', class: 'toggle-window' %>
+      <%= link_to image_tag("/assets/xbtn.png", border: 0, width: 20 ), close_conversation_path(conversation), :style => 'float:right',remote: true, method: :post %>
+    </div>
+
+    <div class="panel-body" style="display: none; text-align:center">
+      <hr>
+      <div class="messages-list">
+        <ul>
+          <%= render 'conversations/conversation_content', messages: conversation.messages, user: user %>
+        </ul>
+      </div>
+      <br><center>
+      <form class="new_message" align="center" name="chat">
+        <input name="conversation_id" type="hidden" value="<%= conversation.id %>">
+        <input name="user_id" type="hidden" value="<%= user.id %>">
+        <textarea name="body" onKeydown="javascript:if(event.keyCode == 13) form.submit();" cols="70" rows="3" style="border:none;vertical-align:middle;background-color: rgba( 255, 255, 255, 0.5 );"></textarea>&nbsp;
+        <button type="submit" style="background-color: rgba( 255, 255, 255, 0 );border:0px"><img class="btn-img" src="/assets/sbtn.png" width="70" height="auto"></button>
+      </form></center>
+    </div>
+  </div>
+</li>

@@ -1,0 +1,177 @@
+<style>
+  h1 {display:inline}
+  .topinfo th{text-align:center; padding:5px;}
+  .num {font-size:25pt;text-align:center; padding:5px;}
+  th {padding-right:10px;
+</style>
+<%=link_to '정보수정', edit_user_registration_path, :class => "smoothScroll",  :style => "display: inline-block;" ,method: 'get' %>
+<div style="border:2px lightgray solid; border-radius:20px; padding:20px; margin-bottom:40px">
+
+  <h1><%= current_user.name %>님</h1>
+  
+  <% if current_user.confirmed_portal == false %>
+    <a href="/users/confirm" style="border:1px lightgray solid;padding:5px;text-size:5px;">인증하러가기</a>
+  <% else %>
+    <b><%= current_user.school %></b>
+  <% end %>
+  
+  <a href="/home/index" class="btn btn-info" role="button" style="float:right;display:inline">CHAT</a>
+  <hr>
+ <table class="topinfo" align="center" >
+   <tr>
+     <td rowspan="2"> <img src="/assets/mpscrap" width="50" height="auto"> </td>
+     <th> 스크랩 </th>
+     <td rowspan="2"> <img src="/assets/mpapp" width="50" height="auto" style="margin-left:50px"> </td>
+     <th> 나의 신청서 </th>
+     <td rowspan="2"> <img src="/assets/mpbad" width="50" height="auto" style="margin-left:50px"> </td>
+     <th> 받은 신청서 </th>
+   </tr>
+   <tr>
+     <td class="num"> <%=@scraps.count%> </td>
+     <td class="num"> <%=@applies.count%> </td>
+     <td class="num"> <%=@badunapp.count%> </td>
+   </tr>
+   
+ </table>
+</div>
+
+<ul class="nav nav-tab nav-justified" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" style="font-weight:bold">내가 쓴 글( <%=@posts.count%> )</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" style="font-weight:bold">신청한 글( <%=@applies.count%> )</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false" style="font-weight:bold">스크랩한 글( <%=@scraps.count%> )</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="apps-tab" data-toggle="tab" href="#apps" role="tab" aria-controls="apps" aria-selected="false" style="font-weight:bold">받은 신청서 ( <%= @badunapp.count %> )</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false" style="font-weight:bold">매칭된 글( <%=@mapplies.count%> )</a>
+    </li>
+</ul>
+<br>
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      
+      <table class="table table-hover">
+          <thead>
+              <tr>
+                <th>제목</th>
+                <th>작성시간</th>
+              </tr>
+         </thead>
+         <tbody>
+            <% @posts.each do |a|%>
+            <tr onClick="location.href='/posts/<%=a.id%>'">
+                <td> <%= a.title %> </td>
+                <td> <%= (a.created_at  + 32400 ).strftime("%Y-%m-%d %a %H:%M:%S")%> </td>
+            </tr>
+            <%end%>
+        </tbody>
+      </table>
+  </div>
+  
+  <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+    
+      <table class="table table-hover">
+          <thead>
+              <tr>
+                <th>제목</th>
+                <th>글 작성자</th>
+                <th>매칭 상태</th>
+              </tr>
+         </thead>
+         <tbody>
+            <% @applies.each do |a|%>
+            <tr onClick="location.href='/posts/<%=a.post.id%>'">
+                <td> <%= a.post.title %> </td>
+                <td> <%= a.post.user_id %> </td>
+                <td> <%=a.matching%> </td>
+            </tr>
+        <%end%>
+        </tbody>
+      </table>
+  </div>
+  
+  <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+      
+      <table class="table table-hover">
+          <thead>
+              <tr>
+                <th>제목</th>
+                <th>글 작성자</th>
+              </tr>
+         </thead>
+         <tbody>
+        <% @scraps.each do |a|%>
+        <tr onClick="location.href='/posts/<%=a.post.id%>'">
+            <td><%= a.post.title %></td>
+            <td><%= a.post.user_id %></td>
+        </tr>
+        <%end%>
+        </tbody>
+      </table>
+  </div>
+  
+  <div class="tab-pane" id="apps" role="tabpanel" aria-labelledby="apps-tab">
+      
+      <table class="table table-hover">
+          <thead>
+              <tr>
+                <th>제목</th>
+                <th>신청서 작성자</th>
+                <th>수락하기</th>
+              </tr>
+         </thead>
+         <tbody>
+        <% @badunapp.each do |a|%>
+        <tr onClick="location.href='/apply/show/<%=a.id%>'">
+            <td><%= a.title %></td>
+            <td><%= a.user_id %></td>
+            <% if a.matching %>
+              <td> <a class="btn btn-info" role="button">수락 완료</a> </td>
+            <% else %>
+              <td> <a href="/post/<%=a.post_id%>/apply_accept/<%=a.id%>" class="btn btn-info" role="button">수락하기</a> </td>
+            <%end%>
+        </tr>
+        <%end%>
+        </tbody>
+      </table>
+  </div>
+  
+    <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+      
+      <table class="table table-hover">
+          <thead>
+              <tr>
+                <th>제목</th>
+                <th>글 작성자</th>
+              </tr>
+         </thead>
+         <tbody>
+        <% @mapplies.each do |a|%>
+            <tr onClick="location.href='/posts/<%=a.post.id%>'">
+                <Td><%= a.post.title %> </Td>
+                <Td><%= a.post.user_id %></Td>
+            </tr>
+            
+        <%end%>
+        </tbody>
+      </table>
+  </div>
+</div>
+
+
+
+<script>
+  $('#myTab a').on('click', function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
+
+
+</script>

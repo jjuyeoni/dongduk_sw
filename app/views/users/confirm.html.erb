@@ -1,0 +1,86 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    h2 {
+        color: black;
+    }
+   
+    input[type=text], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    } 
+    
+    select:focus{outline: 1px solid #827ffe}
+    
+    input[type=submit] {
+        width: 100%;
+        background-color: #6495ED;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    input[type=submit]:hover {
+        background-color: #6495ED;
+    }
+    
+    input[type=text]:focus {
+      outline: 1px solid #827ffe;
+    }
+    
+    div.container_confirm {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 100px;
+        width: 50%;
+        margin: auto;
+    }
+
+    </style>
+    
+    <div class="container_confirm">
+<h2>인증하기</h2><br>
+<%=form_tag(users_create_path, method: "post") do %>
+    <i class="fa fa-envelope icon"></i> 포털 아이디를 입력하세요<br>
+    <%=text_field_tag 'receiver_email', nil, placeholder: '포털 아이디'%>
+    <i class="fa fa-user icon"></i> 
+    학교를 선택하세요<br>
+    <select name ="school">
+        <option value="none">학교 선택</option>
+        <option value="@gachon.ac.kr">가천대학교</option>
+        <option value="@konkuk.ac.kr">건국대학교</option>
+        <option value="@kyonggi.ac.kr">경기대학교</option>
+        <option value="@khu.ac.kr">경희대학교</option>
+        <option value="@korea.ac.kr">고려대학교</option>
+        <option value="@duksung.ac.kr">덕성여자대학교</option>
+        <option value="@dongguk.ac.kr">동국대학교</option>
+        <option value="@dongduk.ac.kr">동덕여자대학교</option>
+        <option value="@mju.ac.kr">명지대학교</option>
+        <option value="@smu.ac.kr">상명대학교</option>
+        <option value="@sogang.ac.kr">서강대학교</option>
+        <option value="@snu.ac.kr">서울대학교</option>
+        <option value="@uos.ac.kr">서울시립대학교</option>
+        <option value="@swu.ac.kr">서울여자대학교</option>
+        <option value="@skku.ac.kr">성균관대학교</option>
+        <option value="@sungshin.ac.kr">성신여자대학교</option>
+        <option value="@sookmyung.ac.kr">숙명여자대학교</option>
+        <option value="@ssu.ac.kr">숭실대학교</option>
+        <option value="@ewha.ac.kr">이화여자대학교</option>
+        <option value="@yonsei.ac.kr">연세대학교</option>
+        <option value="@cau.ac.kr">중앙대학교</option>
+        <option value="@hufs.ac.kr">한국외국어대학교</option>
+        <option value="@hangyang.ac.kr">한양대학교</option>
+        <option value="@hongik.ac.kr">홍익대학교</option>
+    </select><br>
+    <%= submit_tag '확인' %>
+<%end%>
+</div>

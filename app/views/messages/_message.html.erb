@@ -1,0 +1,11 @@
+<li>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="<%= user.id == message.user_id ? 'message-sent' : 'message-received' %>">
+                    <%= content_tag(:div, message.body, style: "white-space: pre-wrap;") %>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>

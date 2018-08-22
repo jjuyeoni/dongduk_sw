@@ -1,0 +1,29 @@
+
+<%if @result.count == 0 %>
+    해당 조건에 일치하는 결과가 없습니다.
+<%else%>
+<h1><i class="fas fa-check"></i> &nbsp;탐색성공</h1>
+
+<hr>
+
+<div class="portfolio-container">
+<% @result.each do |x| %>
+    <div class="col-lg-4 col-md-6 portfolio-thumbnail all <%=Post.find(x.post_id).category%>">
+        <a href="/posts/<%=x.post_id%>" class="portfolio-box">
+        <img src='/assets/blog-post-1.jpg' alt='img'>   
+        <div class='portfolio-box-caption'>
+        <div class='portfolio-box-caption-content'>
+        <div class='project-category text-faded'>
+            <%=Post.find(x.post_id).title%>
+        </div>
+        <div class='project-name'>
+            <%=Post.find(x.post_id).category%>
+        </div>
+        </div>
+        </div>
+        </a>
+    </div>
+<% end %>
+</div>
+
+<%end%>

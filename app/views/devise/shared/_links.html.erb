@@ -1,0 +1,72 @@
+<%- if controller_name != 'sessions' %>
+  <%= link_to "로그인", new_session_path(resource_name) %><br />
+<% end -%>
+
+<%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+  <%= link_to "회원가입", new_registration_path(resource_name) %><br />
+<% end -%>
+
+<%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+  <%= link_to "비밀번호를 잊어버리셨나요?", new_password_path(resource_name) %><br /><br>
+<% end -%>
+
+<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+  <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
+<% end -%>
+
+<%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
+  <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %><br />
+<% end -%>
+
+<div text-align="center">
+<%- if devise_mapping.omniauthable? %>
+  <%= button_to "구글로 로그인", omniauth_authorize_path(resource_name, :google_oauth2),{:class => 'google-login'}%>
+<% end -%>
+
+<%- if devise_mapping.omniauthable? %>
+  <%= button_to "페이스북으로 로그인", omniauth_authorize_path(resource_name, :facebook), {:class => 'facebook-login'} %>
+<% end -%>
+
+<%- if devise_mapping.omniauthable? %>
+  <%= button_to "네이버로 로그인", omniauth_authorize_path(resource_name, :naver), {:class => 'naver-login'}%>
+<% end -%>
+</div>
+
+<style>
+  .google-login {
+  text-indent:-10000px;
+  width: 40px;
+  height: 40px;
+  background-image: url('/assets/google-login.png');
+  background-size: cover;
+  background-color: rgb(255, 255, 255, 0);
+  margin:20px 20px 20px 25%;
+ }
+ 
+ .facebook-login {
+  text-indent:-10000px;
+  width: 40px;
+  height: 40px;
+  background-image: url('/assets/facebook-login.png');
+  background-size: cover;
+  margin:20px;
+ }
+ 
+ .naver-login {
+  text-indent:-10000px;
+  width: 40px;
+  height: 40px;
+  background-image: url('/assets/naver-login.png');
+  background-size: cover;
+  margin:20px;
+ }
+ .button_to {
+   display: inline;
+   left:50%;
+   right:50%;
+ }
+</style>
+  <!--<- resource_class.omniauth_providers.each do |provider| %>
+    <= link_to "#{OmniAuth::Utils.camelize(provider)}로 로그인", omniauth_authorize_path(resource_name, provider) %><br />
+  < end -%>
+  -->

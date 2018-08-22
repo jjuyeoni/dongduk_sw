@@ -1,0 +1,38 @@
+<%= form_for(resource, :html => {:class => "login100-form validate-form flex-sb flex-w"}, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+  <span class="login100-form-title p-b-51">
+		회원가입
+	</span>
+	
+  <div class="wrap-input100 validate-input m-b-16">
+    <%= f.email_field :email, :class => 'input100', :placeholder => '이메일을 입력해주세요.', autofocus: true, autocomplete: "email" %>
+    <span class="focus-input100"></span>
+  </div>
+  
+  <div class="wrap-input100 validate-input m-b-16">
+    <%= f.text_field :name, :class => 'input100', :placeholder => '이름을 입력해주세요.' %>
+    <span class="focus-input100"></span>
+  </div>
+
+  <div class="wrap-input100 validate-input m-b-16">
+    <%= f.password_field :password, :class => 'input100', :placeholder => '비밀번호'+ @minimum_password_length.to_s + '자 이상 입력해주세요.', autocomplete: "off" %>
+    <span class="focus-input100"></span>
+  </div>
+
+  <div class="wrap-input100 validate-input m-b-16">
+    <%= f.password_field :password_confirmation, :class => 'input100', :placeholder => '비밀번호를 재입력해주세요.', autocomplete: "off" %>
+    <span class="focus-input100"></span>
+  </div>
+  
+  <div class="wrap-input100 validate-input m-b-16"><br>
+    <center><%= f.radio_button :sex, "F", checked: true %> Female  &nbsp; <%= f.radio_button :sex, "M" %> Male</center>
+    <br>
+    <span class="focus-input100"></span>
+  </div>
+
+  <div class="container-login100-form-btn m-t-17">
+    <%= f.submit "회원가입", :class => 'login100-form-btn'  %>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>

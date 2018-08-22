@@ -1,0 +1,55 @@
+<h2>Edit <%= resource_name.to_s.humanize %></h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { :class => "login100-form validate-form flex-sb flex-w", method: :put }) do |f| %>
+  <%= devise_error_messages! %>
+  
+  <%= f.label :email %>
+  <div class="wrap-input100 validate-input m-b-16">
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" , :class => 'input100'%>
+    <span class="focus-input100"></span>
+  </div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <%= f.label :password %> 
+  <% if @minimum_password_length %>
+      <i><%= @minimum_password_length %> characters minimum</i>
+    <% end %><br />
+    <i>(leave blank if you don't want to change it)</i>
+  <div class="wrap-input100 validate-input m-b-16">
+    <%= f.password_field :password, autocomplete: "off" , :class => 'input100'%>
+    <span class="focus-input100"></span>
+  </div>
+
+  <%= f.label :password_confirmation %><br />
+  <div class="wrap-input100 validate-input m-b-16">
+    <%= f.password_field :password_confirmation, autocomplete: "off" , :class => 'input100'%>
+    <span class="focus-input100"></span>
+  </div>
+  
+<%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+  <div class="wrap-input100 validate-input m-b-16">
+    <%= f.password_field :current_password, autocomplete: "off" , :class => 'input100'%>
+    <span class="focus-input100"></span>
+  </div>
+  
+  <div class="wrap-input100 validate-input m-b-16"><br>
+    <center><%= f.radio_button :sex, "F" %> Female  &nbsp; <%= f.radio_button :sex, "M" %> Male</center>
+    <br>
+    <span class="focus-input100"></span>
+  </div>
+  
+  <div class="wrap-input100 validate-input m-b-16"><br>
+    <center><a href="/users/confirm">학교수정 및 인증</a></center>
+    <br>
+    <span class="focus-input100"></span>
+  </div>
+
+  <div class="actions" style="margin:auto">
+    <%= f.submit "수정완료" , :class => 'login100-form-btn'%>
+  </div>
+<% end %>
+
+<%= link_to "탈퇴", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, :style => 'float:right'%><br>
