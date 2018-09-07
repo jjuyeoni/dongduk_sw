@@ -22,6 +22,7 @@ gem 'omniauth-naver'
 gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem 'fog-aws' # file을 s3에 upload 가능하게 함
 # gem 'fog', '~> 1.38'
+gem 'mini_magick'
 
 #알림 잼
 gem 'unread'

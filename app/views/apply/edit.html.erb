@@ -1,9 +1,13 @@
-
+<div class="container">
 <h1> 지원서 수정</h1>
+<br>
 <%=form_for(@apply, url: apply_update_path, method: 'patch')do |f| %>
                 <%=f.label :title%><br>
 	            <%=f.text_field :title , class:"form-control"%> 
 	            <%=f.label :content%><br>
-	            <%=f.text_field :content , class:"form-control", size: "24x6" %>
+	            <%=f.text_area :content , class:"form-control", size: "24x30" %>
         	    <%=f.submit '완료',class:"btn", :style => 'float:right'%>
 <%end%>            
+
+</div>
+<br><br><br>

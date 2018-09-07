@@ -1,9 +1,9 @@
+<div class="container">
 <div style="border:2px lightgray solid; border-radius:20px; padding:25px; margin-bottom:40px;font-size:12pt">
-<h1><i class="fab fa-searchengin"></i>&nbsp;빠른 탐색</h1>
-<h5>원하는 정보를 선택해주세요</h5>
+<h1><i class="fab fa-searchengin" style="font-size:30pt"></i>&nbsp;&nbsp;빠른 탐색</h1>
 <hr>
 <%= form_tag("/match/search", method: "post") do %>
-    <h3><i class="fas fa-user"></i>&nbsp;유저 정보</h3><br>
+    <h3>유저 정보</h3><br>
     성별: 
     <%=radio_button_tag 'sex', 'all', checked: true %> 무관
     <%=radio_button_tag 'sex', 'F' %> 여자
@@ -24,11 +24,12 @@
     <br>
     나중에 지역
     <hr>
-    <h3><i class="fas fa-clipboard"></i>&nbsp;글정보</h3><br>
+    <h3>글정보</h3><br>
     <% for i in 0..5 %>
-        <input type="checkbox" name="category[category][]" value="<%=@category[i]%>"> <%=@category[i]%>
+        <input type="checkbox" name="category[category][]" value="<%=@category[i]%>" <%if i == 0 %> checked <%end%> > <%=@category[i]%>
     <% end %>
     <%=submit_tag '찾기' , class: 'btn', :style => 'float:right'%>
 <% end %>
 <br>
+</div>
 </div>

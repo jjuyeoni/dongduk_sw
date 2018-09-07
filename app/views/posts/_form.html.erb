@@ -1,5 +1,22 @@
-<%= form_with model: @post, local: true do |form| %>
-  
+<style>
+    .map_wrap {position:relative;width:100%;height:350px;}
+    .title {font-weight:bold;display:block;}
+    .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
+    #centerAddr {display:block;margin-top:2px;font-weight: normal;}
+    .bAddr {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+    .btn:hover {background-color: rgba(169, 169, 169, 0.5)}
+    td {padding:15px; text-align:center;}
+    th {padding:15px; text-align:center;}
+    tr {text-align:center; }
+    #wb {rgba(255, 255, 255, 0.5)}
+    .hi{width:150px; height:auto; margin-right:10px;vertical-align:middle;display:inline}
+    #fr{float:right;padding:0px;}
+    table{font-size:10pt;}
+</style>
+
+<%= form_with model: @post, local: true, multipart: true  do |form| %>
+<div class="row">
+  <div class="col-md-6">
   <% if @post.errors.any? %>
     <div id="error_explanation">
       <h2>
@@ -14,34 +31,40 @@
     </div>
   <% end %>
   
-  <p>
+  
     <div class="form-group row">
-      <div style="margin-left:10px;"><%= form.select(:category, options_for_select(['게임','코딩','언어','뷰티','운동','음악']),{}, {:class=>"form-control"})%></div>&nbsp;
-      <div style="width:90%;margin:0px"><%= form.text_field :title , class:"form-control", :placeholder => 'title', :style => 'display:inline'%></div>
+        
+            <div class="col-md-3" style="padding-left: 0px;"><%= form.select(:category, options_for_select(['게임','코딩','언어','뷰티','운동','음악']),{}, {:class=>"form-control"})%></div>
+            <div class="col-md-9" style="padding-left: 0px;padding-right: 0px;"><%= form.text_field :title , class:"form-control", :placeholder => 'title', :style => 'display:inline'%></div>
+            <%= form.text_area :content , class:"form-control", size: "24x30" %>
+            <div id="dox" class="table-control">ddf</div>
     </div>
-  </p>
  
-  <p>
-    <%= form.label :content %><br>
-    <%= form.text_area :content , class:"form-control", size: "24x6" %>
-  </p>
  
-    <p><%= form.label :date %>
+ </div>
+ 
+ <div class="col-md-6">
     <div id="dox" class="table-control">
       <% days = ['일', '월', '화', '수', '목', '금', '토'] %>
       <% for i in 0..6 %>
          <font <%if i == 0%> color="#DC143C" <% elsif i == 6 %> color="#4169E1" <%end%> ><%= days[i] %></font> &nbsp;
-            <input type="checkbox" name="date[<%= i %>][]" value="안돼!">안돼!&nbsp;
             <input type="checkbox" name="date[<%= i %>][]" value="오전"> 오전 &nbsp; <input type="checkbox" name="date[<%= i %>][]" value="오후"> 오후 &nbsp; 
             <input type="checkbox" name="date[<%= i %>][]" value="저녁"> 저녁 &nbsp; <input type="checkbox" name="date[<%= i %>][]" value="풀타임"> 풀타임 &nbsp;
           <br>
       <% end %>
     </div>
-    </p>
-
-<imput type="address" id="demo"></imput>
-<div id="map" style="width:100%;height:350px;"></div>
-
+   
+   <!-- 이미지 업로드 -->
+  <input type = "file" name= "pic" accept="image/*">
+    
+<div class="map_wrap">
+    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+    <div class="hAddr">
+        <span id="centerAddr"></span>
+    </div>
+</div>
+</div>
+</div>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=194dda0c9f26fd6381c1f54652c244e6&libraries=services"></script>
 <script>
 // 주소-좌표 변환 객체를 생성합니다
@@ -125,44 +148,43 @@ function displayCenterInfo(result, status) {
             // 행정동의 region_type 값은 'H' 이므로
             if (result[i].region_type === 'H') {
                 address = result[i].address_name.split(" ");
-                document.getElementById("demo").innerHTML = address[2];
+                document.getElementById("centerAddr").innerHTML = address[2];
                 break;
             }
         }
-        document.getElementById("post_add").value = address[2];
+        document.getElementById("post_address").value = address[2];
     }
-}
+} 
 </script>
  <p>
     <%= form.hidden_field :lat %>
     <%= form.hidden_field :lon %>
-    <%= form.hidden_field :add %>
+    <%= form.hidden_field :address %>
   </p>
 
   <p>
-    <button type="button" onClick="aa(this.form)">Done</button>
-    <%=submit_tag '제출' %>
+    <button type="button" class="btn" onClick="aa(this.form)" style="float:right">Done</button>
   </p>
 <% end %>
 
 <script>
   function aa(form){
+      isChk = false;
     for (var j = 0; j < 7; j++){
       str = "date[" + j + "][]"
      var q = document.getElementsByName(str);
-    isChk = false;
     for(var i=0; i < q.length; i++){
       
             if(q[i].checked == true) {
                 isChk = true;
-                break;}}
-    
+                return form.submit();}}
+    }
     if(!isChk){
-      alert("시간 항목 오류");
-       return false;}}
+      alert("시간을 적어도 하나 이상 선택해주세요");
+       return false;}
        
     
-      return form.submit();
+      
     
 }
 </script>

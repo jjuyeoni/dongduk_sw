@@ -1,7 +1,26 @@
-<h1>Edit post</h1>
+<style>
+    .map_wrap {position:relative;width:100%;height:350px;}
+    .title {font-weight:bold;display:block;}
+    .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
+    #centerAddr {display:block;margin-top:2px;font-weight: normal;}
+    .bAddr {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+    .btn{background-color: rgba(0, 0, 0, 0);}
+    td {padding:15px; text-align:center;}
+    th {padding:15px; text-align:center;}
+    tr {text-align:center; }
+    #wb {rgba(255, 255, 255, 0.5)}
+    .hi{width:150px; height:auto; margin-right:10px;vertical-align:middle;display:inline}
+    #fr{float:right;padding:0px;}
+    table{font-size:10pt;}
+</style>
+
+<div id="about" class="paddsection">
+    <div class="container">
+
  
 <%= form_with model: @post, local: true do |form| %>
-  
+  <div class="row">
+    <div class="col-md-6">
   <% if @post.errors.any? %>
     <div id="error_explanation">
       <h2>
@@ -15,20 +34,14 @@
       </ul>
     </div>
   <% end %>
-  
-  <p>
+
     <div class="form-group row">
-      <div style="margin-left:10px;"><%= form.select(:category, options_for_select(['게임','코딩','언어','뷰티','운동','음악']),{}, {:class=>"form-control"})%></div>&nbsp;
-      <div style="width:90%;margin:0px"><%= form.text_field :title , class:"form-control", :placeholder => 'title', :style => 'display:inline'%></div>
+      <div class="col-md-3" style="padding-left: 0px;"><%= form.select(:category, options_for_select(['게임','코딩','언어','뷰티','운동','음악']),{}, {:class=>"form-control"})%></div>
+      <div class="col-md-9" style="padding-left: 0px;padding-right: 0px;"><%= form.text_field :title , class:"form-control", :placeholder => 'title', :style => 'display:inline'%></div>
+      <%= form.text_area :content , class:"form-control", size: "24x30" %>
     </div>
-  </p>
- 
-  <p>
-    <%= form.label :content %><br>
-    <%= form.text_area :content , class:"form-control", size: "24x6" %>
-  </p>
-  
-  <p><%= form.label :date %>
+  </div>
+  <div class="col-md-6">
     <div id="dox" class="table-control">
       <% days = ['일', '월', '화', '수', '목', '금', '토'] %>
       <% tt = ['오전', '오후', '저녁', '풀타임'] %>
@@ -41,18 +54,26 @@
           <% k += 1 %>
         <%end%>
          <font <%if i == 0%> color="#DC143C" <% elsif i == 6 %> color="#4169E1" <%end%> ><%= days[i] %></font> &nbsp;
-           <% for j in 0..4 %>
+           <% for j in 0..3 %>
              <input type="checkbox" name="date[<%= i %>][]" value="<%=tt[j]%>" <% if @tmp.include?"#{tt[j]}" %> checked <%end%>><%=tt[j]%>&nbsp;
            <% end %>
            <br>
       <% end %>
     </div>
-    </p>
-  
-<div id="map" style="width:100%;height:350px;"></div>
-
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=194dda0c9f26fd6381c1f54652c244e6"></script>
+    
+<div class="map_wrap">
+    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+    <div class="hAddr">
+        <span id="centerAddr"></span>
+    </div>
+</div>
+</div>
+</div>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=194dda0c9f26fd6381c1f54652c244e6&libraries=services"></script>
 <script>
+// 주소-좌표 변환 객체를 생성합니다
+var geocoder = new daum.maps.services.Geocoder();
+
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
         center: new daum.maps.LatLng(<%= @post.lat %>, <%= @post.lon %>), // 지도의 중심좌표
@@ -72,7 +93,7 @@ var marker = new daum.maps.Marker({
 
 // 마커가 지도 위에 표시되도록 설정합니다
 marker.setMap(map);
-
+searchAddrFromCoords(map.getCenter(), displayCenterInfo);
 // 지도에 클릭 이벤트를 등록합니다
 // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
 daum.maps.event.addListener(map, 'click', function(mouseEvent) {        
@@ -82,27 +103,67 @@ daum.maps.event.addListener(map, 'click', function(mouseEvent) {
     
     // 마커 위치를 클릭한 위치로 옮깁니다
     marker.setPosition(latlng);
-    
-    // var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-    // message += '경도는 ' + latlng.getLng() + ' 입니다';
-    
-    // var resultDiv = document.getElementById('clickLatlng'); 
-    // resultDiv.innerHTML = message;
-    
+
     document.getElementById("post_lat").value = latlng.getLat();
     document.getElementById("post_lon").value = latlng.getLng();
+ 
+    searchAddrFromCoords(latlng, displayCenterInfo);
 });
-  
 
+function searchAddrFromCoords(coords, callback) {
+    // 좌표로 행정동 주소 정보를 요청합니다
+    geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
+}
+
+var address;
+
+function displayCenterInfo(result, status) {
+    if (status === daum.maps.services.Status.OK) {
+        //var infoDiv = document.getElementById('centerAddr');
+
+        for(var i = 0; i < result.length; i++) {
+            // 행정동의 region_type 값은 'H' 이므로
+            if (result[i].region_type === 'H') {
+                address = result[i].address_name.split(" ");
+                document.getElementById("centerAddr").innerHTML = address[2];
+                break;
+            }
+        }
+        document.getElementById("post_address").value = address[2];
+    }
+}
 </script>
  <p>
     <%= form.hidden_field :lat %>
     <%= form.hidden_field :lon %>
+    <%= form.hidden_field :address %>
   </p>
 
   <p>
-    <%= form.submit %>
+    <button type="button" class="btn" onClick="aa(this.form)">Done</button>
   </p>
 <% end %>
- 
-<%= link_to 'Back', posts_path %>
+
+<script>
+  function aa(form){
+      isChk = false;
+    for (var j = 0; j < 7; j++){
+      str = "date[" + j + "][]"
+     var q = document.getElementsByName(str);
+    for(var i=0; i < q.length; i++){
+      
+            if(q[i].checked == true) {
+                isChk = true;
+                return form.submit();}}
+    }
+    if(!isChk){
+      alert("시간 항목 오류");
+       return false;}
+       
+    
+      
+    
+}
+</script>
+ </div>
+  </div>

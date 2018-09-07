@@ -2,9 +2,13 @@
   h1 {display:inline}
   .topinfo th{text-align:center; padding:5px;}
   .num {font-size:25pt;text-align:center; padding:5px;}
-  th {padding-right:10px;
+  th {padding-right:10px;}
+ 
+  
 </style>
-<%=link_to '정보수정', edit_user_registration_path, :class => "smoothScroll",  :style => "display: inline-block;" ,method: 'get' %>
+
+<div class="container">
+
 <div style="border:2px lightgray solid; border-radius:20px; padding:20px; margin-bottom:40px">
 
   <h1><%= current_user.name %>님</h1>
@@ -17,6 +21,19 @@
   
   <a href="/home/index" class="btn btn-info" role="button" style="float:right;display:inline">CHAT</a>
   <hr>
+  
+  <div style="float:right;font-size:10pt">
+    <% if current_user.rate != -1 %>
+  <a href="/<%=current_user.id%>/review/index"> 
+  <% for i in 1..current_user.rate %>
+        <img src="/assets/star.png" width="20px" height="20px">
+  <% end %><b>( <%=current_user.rate %> )</b>
+  </a>
+  <% end %>
+  <br>
+    <%=link_to '정보수정', edit_user_registration_path, :class => "smoothScroll",  :style => "display: inline-block;" ,method: 'get' %>
+  </div>
+  <br><br>
  <table class="topinfo" align="center" >
    <tr>
      <td rowspan="2"> <img src="/assets/mpscrap" width="50" height="auto"> </td>
@@ -31,7 +48,6 @@
      <td class="num"> <%=@applies.count%> </td>
      <td class="num"> <%=@badunapp.count%> </td>
    </tr>
-   
  </table>
 </div>
 
@@ -149,14 +165,23 @@
           <thead>
               <tr>
                 <th>제목</th>
-                <th>글 작성자</th>
+                <th>나의 파트너</th>
+                <th></th>
               </tr>
          </thead>
          <tbody>
         <% @mapplies.each do |a|%>
-            <tr onClick="location.href='/posts/<%=a.post.id%>'">
+            <!--<tr onClick="location.href='/posts/<%=a.post.id%>'">--> <tr>
                 <Td><%= a.post.title %> </Td>
-                <Td><%= a.post.user_id %></Td>
+                <Td>
+                  <% if  a.post.user_id == current_user.id%> 
+                    <%=a.user_id%></td> 
+                    <td><button onclick="location.href='/<%=a.user_id%>/review/new' ">활동종료</button> </td>
+                    
+                  <% else %> 
+                    <%=a.partner%></td>
+                    <td><button onclick="location.href='/<%=a.partner%>/review/new' ">활동종료</button> </td>
+                  <% end %>
             </tr>
             
         <%end%>
@@ -165,6 +190,7 @@
   </div>
 </div>
 
+</div>
 
 
 <script>

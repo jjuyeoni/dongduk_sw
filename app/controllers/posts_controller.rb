@@ -31,16 +31,20 @@ class PostsController < ApplicationController
         @post = @user.posts.new(post_params)
         @tmp = Array.new
         for i in 0..6
-        @post.candays[i]= Array.new
-        if params[:date][i.to_s] == nil
-          @post.candays[i] << "없다요"
-        else
-          params[:date][i.to_s].each do |d|
-            @post.candays[i] << d
+          @post.candays[i]= Array.new
+          if params[:date][i.to_s] == nil
+            @post.candays[i] << "없다요"
+          else
+            params[:date][i.to_s].each do |d|
+              @post.candays[i] << d
+            end
           end
         end
-        end
-        
+      
+        uploader = AvatarUploader.new
+        uploader.store!(params[:pic])
+        @post.image_url = uploader.url
+      
         if @post.save
             redirect_to @post
         else
@@ -66,15 +70,14 @@ class PostsController < ApplicationController
       redirect_to posts_path
     end
     
-    def upload
-      Post.upload(content: params[:content],
-                            image: params[:image])
-      redirect_to :back
-    end
+    # def upload
+      
+      
+    # end
     
     private
       def post_params
-        params.require(:post).permit(:title, :content, :lat, :lon, :category, :add, :image)
+        params.require(:post).permit(:title, :content, :lat, :lon, :category, :address)
       end
       
       def authenticate
@@ -82,5 +85,6 @@ class PostsController < ApplicationController
         if user.confirmed_portal != true
             redirect_to users_confirm_path
         end
-    end
+      end
+    
 end

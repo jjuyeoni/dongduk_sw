@@ -1,0 +1,18 @@
+<div class="container">
+    <h1> <%=@user_id%>에 대한 후기 작성 </h1>
+    <br>
+    <div style="border:1px gray solid; padding:30px; margin-bottom:40px">
+    <%= form_tag("/#{@user_id}/review/create", method: "post") do %>
+    <div data-role="rangeslider" data-mini="true">
+        평점 : <input name="rate" id="rate" class="slide" type="range" min="0" max="5" value="0" data-highlight="true" onchange="document.getElementById('maxValue').innerHTML=this.value;">
+        <span id="maxValue">0</span>
+    </div>
+    <br>
+    <div class="form-group row" style="margin:0px">
+    <div class="col-md-11"><%= text_field_tag(:content,"", class:'form-control', placeholder: '한줄평 작성' )%></div>
+    <%= submit_tag '완료' , class: 'btn'%>
+    </div>
+    <% end %>
+    <br><br>
+    </div>
+</div>

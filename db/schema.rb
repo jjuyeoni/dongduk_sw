@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_20_140313) do
+ActiveRecord::Schema.define(version: 2018_09_03_132405) do
 
   create_table "applies", force: :cascade do |t|
     t.integer "partner"
@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 2018_08_20_140313) do
     t.string "lat"
     t.string "lon"
     t.integer "user_id"
-    t.string "image"
+    t.string "image_url", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
@@ -96,6 +96,15 @@ ActiveRecord::Schema.define(version: 2018_08_20_140313) do
     t.index ["readable_type", "readable_id"], name: "index_read_marks_on_readable_type_and_readable_id"
     t.index ["reader_id", "reader_type", "readable_type", "readable_id"], name: "read_marks_reader_readable_index", unique: true
     t.index ["reader_type", "reader_id"], name: "index_read_marks_on_reader_type_and_reader_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "writer"
+    t.integer "rate"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "schools", force: :cascade do |t|

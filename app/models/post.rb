@@ -1,5 +1,6 @@
 class Post < ApplicationRecord
-    mount_uploader :image
+    mount_uploader :image, AvatarUploader
+
     belongs_to :user
     validates_presence_of :title, :content
     searchable do

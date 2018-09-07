@@ -1,18 +1,43 @@
  </style>
  
- <div style="margin:auto;text-align:center">
-   <img src="/assets/main4.png" width="90%" height="auto">
- </div>
+  <!--start section header -->
+  <div id="header" class="home" style="position:relative;">
+
+    <!--<div class="container">-->
+    <!--  <div class="header-content">-->
+    <!--    <h1>I'm <span class="typed"></span></h1>-->
+    <!--    <p>designer, developeur, photographer</p>-->
+
+    <!--    <ul class="list-unstyled list-social">-->
+    <!--      <li><a href="#"><i class="ion-social-facebook"></i></a></li>-->
+    <!--      <li><a href="#"><i class="ion-social-twitter"></i></a></li>-->
+    <!--      <li><a href="#"><i class="ion-social-instagram"></i></a></li>-->
+    <!--      <li><a href="#"><i class="ion-social-googleplus"></i></a></li>-->
+    <!--      <li><a href="#"><i class="ion-social-tumblr"></i></a></li>-->
+    <!--      <li><a href="#"><i class="ion-social-dribbble"></i></a></li>-->
+    <!--    </ul>-->
+    <!--  </div>-->
+    <!--</div>-->
+  </div>
+  <!-- End section header -->
+<div id="about">
+  <div class="container">
+ <!--<div style="margin:auto;text-align:center">-->
+ <!--  <img src="/assets/main4.png" width="90%" height="auto">-->
+ <!--</div>-->
  
  <br><br><br>
  
   <div style="border:2px #6495ED solid;padding:5px;width:600px;margin:auto">
-    <i class="fas fa-search" style="color:#6495ED;display:inline"></i>
+    <i class="fas fa-search" style="color:#6495ED;display:inline;font-size:15pt"></i>
     <%= form_tag posts_path, :style => "border:none;width:500px;display:inline", :method => :get do %>
       <%= text_field_tag :search, params[:search], :style => "border:none;width:550px"%>
     <% end %>
 </div>
-       
+
+
+
+  
        <!-- start section journal -->
   <div id="portfolio" class="text-center paddsections">
     
@@ -38,6 +63,7 @@
             <% @posts.each do |post| %>
               <div class="col-lg-4 col-md-6 portfolio-thumbnail all <%=post.category%>">
                   <a href="/posts/<%=post.id%>" class="portfolio-box">
+                   
                     <img src='assets/blog-post-1.jpg' alt='img'>   
                     <div class='portfolio-box-caption'>
                       <div class='portfolio-box-caption-content'>
@@ -58,4 +84,5 @@
     <!--</div>-->
   </div>
   <!-- End section journal -->
-
+ </div>
+  </div>

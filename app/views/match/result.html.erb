@@ -1,29 +1,116 @@
+<div class="floating"> 
+<div class="matching-result">
+    <h2>빠른탐색</h2>
+    <br> <b>성별</b> <br>
+    <%= @sex %> <br> 
+    <br> <b>학교</b> <br>
+    <%=@school%>  <br>  
+    <br> <b>학번</b> <br> <%= @start_sid%> ~ <%= @end_sid%> 
+    <br>
+</div>
+<br>
 
+<b style="font-size:12pt">평점</b>
+<ul id="filters">
+    <li>
+        <input type="checkbox" name="fil" value="1" id="filter-1"  />
+        <label for="filter-1" style="color:gold">★</label>
+    </li>
+    <li>
+        <input type="checkbox" name="fil" value="2" id="filter-2"  />
+        <label for="filter-2" style="color:gold">★★</label>
+    </li>
+    <li>
+        <input type="checkbox" name="fil" value="3" id="filter-3"  />
+        <label for="filter-3" style="color:gold">★★★</label>
+    </li>
+    <li>
+        <input type="checkbox" name="fil" value="4" id="filter-4"  />
+        <label for="filter-4" style="color:gold">★★★★</label>
+    </li>
+     <li>
+        <input type="checkbox" name="fil" value="5" id="filter-5"  />
+        <label for="filter-5" style="color:gold">★★★★★</label>
+    </li>
+</ul>
+</div>
+<div class="container">
+<br>
 <%if @result.count == 0 %>
-    해당 조건에 일치하는 결과가 없습니다.
+    <div class="centerdiv"><h3><i class="fas fa-exclamation-triangle" style="font-size:25pt;color:Crimson"></i> &nbsp;해당 조건에 일치하는 결과가 없습니다</h3></div>
 <%else%>
-<h1><i class="fas fa-check"></i> &nbsp;탐색성공</h1>
-
 <hr>
-
-<div class="portfolio-container">
-<% @result.each do |x| %>
-    <div class="col-lg-4 col-md-6 portfolio-thumbnail all <%=Post.find(x.post_id).category%>">
-        <a href="/posts/<%=x.post_id%>" class="portfolio-box">
-        <img src='/assets/blog-post-1.jpg' alt='img'>   
-        <div class='portfolio-box-caption'>
-        <div class='portfolio-box-caption-content'>
-        <div class='project-category text-faded'>
-            <%=Post.find(x.post_id).title%>
+ <div id="portfolio" class="text-center paddsections">
+ <div class="row">
+        <div class="col-md-12">
+         
+         <div class="portfolio-list">
+            
+            <ul class="nav list-unstyled" id="portfolio-flters">
+              <li class="filter filter-active" data-filter=".all">전체</li>
+              <%@category.each do |a|%>
+                <li class="filter" data-filter=".<%=a%>"><%=a%></li>
+              <%end%>
+            </ul>
+  
+          </div> 
+          
+           <div class="portfolio-container">
+            <% @result.each do |x| %>
+            <div class="<%=User.find(x.user_id).rate%>">
+              <div class="col-lg-4 col-md-6 portfolio-thumbnail all <%=Post.find(x.post_id).category%>">
+                  <a href="/posts/<%=x.post_id%>" class="portfolio-box">
+                   
+                    <img src='/assets/blog-post-1.jpg' alt='img'>   
+                    <div class='portfolio-box-caption'>
+                      <div class='portfolio-box-caption-content'>
+                        <div class='project-category text-faded'>
+                         <%=Post.find(x.post_id).title%>
+                        </div>
+                        <div class='project-name'>
+                          <%=Post.find(x.post_id).category%>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+              </div>
+              </div>
+            <% end %>
+          </div>
         </div>
-        <div class='project-name'>
-            <%=Post.find(x.post_id).category%>
-        </div>
-        </div>
-        </div>
-        </a>
-    </div>
-<% end %>
+      </div>
 </div>
 
+
+
+                        
+
+
 <%end%>
+</div>
+
+
+<br>
+
+
+
+<script>
+    $("#filters :checkbox").change(function() {
+   $("#filters :checkbox:not(:checked)").each(function() {
+       var objs = document.getElementsByClassName($(this).val());
+       for( var i = 0; i < objs.length; i++ ){
+    var obj = objs.item(i);
+   obj.style.display = 'none';}
+   });
+   
+   $("#filters :checkbox:checked").each(function() {
+       var objs = document.getElementsByClassName($(this).val());
+       for( var i = 0; i < objs.length; i++ ){
+    var obj = objs.item(i);
+   obj.style.display = 'block';}
+   });
+});
+
+
+
+</script>

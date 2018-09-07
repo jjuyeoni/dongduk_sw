@@ -1,3 +1,4 @@
+#빠른 검색 매칭결과 모델입니다요
 class CreateMatposts < ActiveRecord::Migration[5.2]
   def change
     create_table :matposts do |t|
@@ -8,3 +9,4 @@ class CreateMatposts < ActiveRecord::Migration[5.2]
     end
   end
 end
+

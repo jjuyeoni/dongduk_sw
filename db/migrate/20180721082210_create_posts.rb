@@ -9,7 +9,7 @@ class CreatePosts < ActiveRecord::Migration[5.2]
       t.string :lat
       t.string :lon
       t.references :user, foreign_key: true
-      t.string :image
+      t.string :image_url, :default => ""
       
       t.timestamps
     end

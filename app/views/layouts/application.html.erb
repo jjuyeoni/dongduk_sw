@@ -71,7 +71,7 @@
             <ul class="nav-menu list-unstyled">
               <div class="row">
               <div class="col-lg-2 middle"><li class="nav-item">
-                <a href="#" class="smoothScroll",  style= "display: inline-block;" >서비스소개</a>
+                <a href="/about/about" class="smoothScroll",  style= "display: inline-block;" >서비스소개</a>
               </li></div>
               <div class="col-lg-2 middle"><li style= "display: inline-block; text-align:center">
                 <a href="/match/index"  class="smoothScroll",  style= "display: inline-block">빠른탐색</a>
@@ -90,7 +90,7 @@
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/mypage/mypage" style="display: inline-block;">마이페이지</a>
-                    <%=link_to '로그아웃', destroy_user_session_path, :class => "dropdown-item", method: 'delete' %>
+                    <%=link_to '로그아웃', destroy_user_session_path, :class => "dropdown-item", method: 'delete'%>
                   </div>
                 </li></div>
               <% else %>
@@ -115,33 +115,12 @@
   
       <!-- End section navbar -->
 
-    <!-- start section header -->
-  <!--<div id="header" class="home" style="position:relative;">-->
-
-  <!--  <div class="container">-->
-  <!--    <div class="header-content">-->
-  <!--      <h1>I'm <span class="typed"></span></h1>-->
-  <!--      <p>designer, developeur, photographer</p>-->
-
-  <!--      <ul class="list-unstyled list-social">-->
-  <!--        <li><a href="#"><i class="ion-social-facebook"></i></a></li>-->
-  <!--        <li><a href="#"><i class="ion-social-twitter"></i></a></li>-->
-  <!--        <li><a href="#"><i class="ion-social-instagram"></i></a></li>-->
-  <!--        <li><a href="#"><i class="ion-social-googleplus"></i></a></li>-->
-  <!--        <li><a href="#"><i class="ion-social-tumblr"></i></a></li>-->
-  <!--        <li><a href="#"><i class="ion-social-dribbble"></i></a></li>-->
-  <!--      </ul>-->
-  <!--    </div>-->
-  <!--  </div>-->
-  <!--</div>-->
-  <!-- End section header -->
+    
     
   <!-- start section about us -->    
-  <div id="about" class="paddsection">
-    <div class="container">
+  
       <%= yield %>
-    </div>
-  </div>
+   
   <!--end section about us-->
     
   

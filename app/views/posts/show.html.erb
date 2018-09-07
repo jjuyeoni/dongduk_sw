@@ -31,7 +31,7 @@
 
 </style>
 
-
+<div id="about" class="paddsection">
 <div class="container" style="font-family: 'Gothic A1', sans-serif;">
 
   <%= link_to 'Back', posts_path %><br><br>
@@ -41,9 +41,9 @@
           <th colspan="2" width="600" style="background-color:#DCDCDC"> [ <%= @post.category %> ] <%= @post.title %> </th>
       </tr>
       <tr>
-          <td rowspan="4" width="60%" height="auto"> <img src="/assets/blog-post-1.jpg"></td>
+          <td rowspan="4" width="60%" height="auto"> <img src=@post.image_url></td>
           <td style="border-bottom:1.5px #DCDCDC solid;height:5%"> 
-              <font  style="float:left;font-weight:bold;font-size:12pt">작성자 : <%= @post.user_id %></font><br>
+              <font  style="float:left;font-weight:bold;font-size:12pt"><span data-tooltip-text="평점 : <%=User.find(@post.user_id).rate%>" OnClick="location.href='/<%= @post.user_id%>/review/index'">작성자 : <%= @post.user_id %></span></font><br>
               <div style="vertical-align:bottom;float:right;font-size:10pt;padding:0px;margin:10"><%= (@post.created_at + 32400 ).strftime "%Y-%m-%d %H:%M"%></div>
           </td>
       </tr>
@@ -123,13 +123,16 @@
               <div class="map_wrap">
                 <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
                 <div class="hAddr">
-                    <span class="title">지도중심기준 행정동 주소정보</span>
-                    <span id="centerAddr"></span>
+                    <span id="centerAddr"></span> <a href="http://map.daum.net/link/to/도착지,<%=@post.lat%>,<%=@post.lon%>" target="_blank">길 찾기 </a>
                 </div>
-            </div>
- 
+                
+              </div>
+             
             <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=194dda0c9f26fd6381c1f54652c244e6&libraries=services"></script>
             <script>
+                // 주소-좌표 변환 객체를 생성합니다
+                var geocoder = new daum.maps.services.Geocoder();
+                
                 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
                     mapOption = { 
                         center: new daum.maps.LatLng(<%= @post.lat %>, <%= @post.lon %>), // 지도의 중심좌표
@@ -139,9 +142,6 @@
 
                 // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
                 var map = new daum.maps.Map(mapContainer, mapOption); 
-
-                // 주소-좌표 변환 객체를 생성합니다
-                var geocoder = new daum.maps.services.Geocoder();
 
                 // 지도 관련 코드 시작 
                 // 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
@@ -305,3 +305,4 @@
   $(this).tab('show')
 })
 </script>
+ </div>

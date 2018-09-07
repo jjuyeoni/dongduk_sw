@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'home/index'
   get 'register/info' # 로그인한 후 화면
   get 'mypage/mypage' # 마이페이지
+  get 'about/about'
   
   # get 'user/name'
   # get 'user/email'
@@ -55,4 +56,9 @@ Rails.application.routes.draw do
   post 'users/send' => 'users#confirm'
   post 'users/authen' => 'users#authen'
   
+  #후기작성
+  get ':u_id/review/new' => 'review#new'
+  post ':u_id/review/create' => 'review#create'
+  get  ':u_id/review/index' => 'review#index'
+
 end
