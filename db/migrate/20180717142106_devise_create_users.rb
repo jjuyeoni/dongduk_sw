@@ -5,11 +5,13 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
     create_table :users do |t|
       
       ## customizing
-      t.string :sex
+      t.string :sex, default: "성별"
       t.integer :rate ,default: -1
       t.string :school
       t.integer :sid
       t.string :name
+      t.string :instagram, default: nil
+      t.string :twitter, default:nil
       t.string :profile_img
       t.boolean :confirmed_portal, default: 0, null: false
       

@@ -1,43 +1,10 @@
- </style>
- 
   <!--start section header -->
-  <div id="header" class="home" style="position:relative;">
-
-    <!--<div class="container">-->
-    <!--  <div class="header-content">-->
-    <!--    <h1>I'm <span class="typed"></span></h1>-->
-    <!--    <p>designer, developeur, photographer</p>-->
-
-    <!--    <ul class="list-unstyled list-social">-->
-    <!--      <li><a href="#"><i class="ion-social-facebook"></i></a></li>-->
-    <!--      <li><a href="#"><i class="ion-social-twitter"></i></a></li>-->
-    <!--      <li><a href="#"><i class="ion-social-instagram"></i></a></li>-->
-    <!--      <li><a href="#"><i class="ion-social-googleplus"></i></a></li>-->
-    <!--      <li><a href="#"><i class="ion-social-tumblr"></i></a></li>-->
-    <!--      <li><a href="#"><i class="ion-social-dribbble"></i></a></li>-->
-    <!--    </ul>-->
-    <!--  </div>-->
-    <!--</div>-->
-  </div>
-  <!-- End section header -->
+<div id="header" class="home" style="position:relative;">
+</div>
+  
 <div id="about">
   <div class="container">
- <!--<div style="margin:auto;text-align:center">-->
- <!--  <img src="/assets/main4.png" width="90%" height="auto">-->
- <!--</div>-->
- 
- <br><br><br>
- 
-  <div style="border:2px #6495ED solid;padding:5px;width:600px;margin:auto">
-    <i class="fas fa-search" style="color:#6495ED;display:inline;font-size:15pt"></i>
-    <%= form_tag posts_path, :style => "border:none;width:500px;display:inline", :method => :get do %>
-      <%= text_field_tag :search, params[:search], :style => "border:none;width:550px"%>
-    <% end %>
-</div>
 
-
-
-  
        <!-- start section journal -->
   <div id="portfolio" class="text-center paddsections">
     
@@ -46,8 +13,8 @@
         <div class="col-md-12">
          
          <div class="portfolio-list">
-  
             <ul class="nav list-unstyled" id="portfolio-flters">
+              
               <li class="filter filter-active" data-filter=".all">전체</li>
               <li class="filter" data-filter=".게임">게임</li>
               <li class="filter" data-filter=".코딩">코딩</li>
@@ -61,21 +28,30 @@
           
            <div class="portfolio-container">
             <% @posts.each do |post| %>
-              <div class="col-lg-4 col-md-6 portfolio-thumbnail all <%=post.category%>">
+              <div class="col-lg-3 col-md-6 portfolio-thumbnail all <%=post.category%>">
+                <div style="border: 1px solid rgba(0, 0, 0, 0.23);">
+       
                   <a href="/posts/<%=post.id%>" class="portfolio-box">
-                   
-                    <img src='assets/blog-post-1.jpg' alt='img'>   
+                  <div> 
+                    <% if post.image.main.url.nil? %>
+                      <img src="/assets/giventake.png" alt="img">
+                    <% else %>
+                      <img src='<%= post.image.main %>' alt='img'>   
+                    <% end %>
+                    </div>
+                    
+                    <div style="font-size: 10pt; text-align: left; padding:15px;">
+                      <p>[<%= post.category %>] <%= post.title %>
+                      <% if post.state != "-1" %>
+                      <span class="badge badge-danger">마감</span>
+                      <%end%></p>
+                      <p><cap><i class='bx bx-map'></i><%= post.address[0] %> |</cap> <%= User.find(post.user_id).name %></p>
+                    </div>
                     <div class='portfolio-box-caption'>
-                      <div class='portfolio-box-caption-content'>
-                        <div class='project-category text-faded'>
-                          <%=post.title%>
-                        </div>
-                        <div class='project-name'>
-                          <%=post.category%>
-                        </div>
-                      </div>
+                      
                     </div>
                   </a>
+                </div>
               </div>
             <% end %>
           </div>

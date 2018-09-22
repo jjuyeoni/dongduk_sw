@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Do+Hyeon|Nanum+Myeongjo');
+@import url('https://fonts.googleapis.com/css?family=Do+Hyeon|Nanum+Myeongjo|Nanum+Gothic+Coding');
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+
 /*
   Theme Name: Folio
   Theme URL: https://bootstrapmade.com/folio-bootstrap-portfolio-template/
@@ -28,7 +30,7 @@
   text-align: center;
   opacity: 0;
   color: #fff;
-  background: rgba(173, 255, 47, 0.3);
+  background: rgba(0, 0, 0, 0.23);
   -webkit-transition: all 0.2s;
   -moz-transition: all 0.2s;
   transition: all 0.2s;
@@ -83,9 +85,9 @@
 
 body {
   background: #ffffff;
-  color: #898989;
-  font-family: 'Gothic A1', 'Poppins', helvetica;
-  font-size: 20px;
+  color: black;
+  font-family: 'Nanum Gothic Coding','Gothic A1', 'Poppins', helvetica;
+  font-size: 13px;
   font-weight: 300;
   line-height: 20px;
   letter-spacing: 0.02em;
@@ -155,11 +157,11 @@ nav ul li a {
 }
 
 p {
-  margin: 25px 0;
-  padding: 0;
-  font-size: 15px;
-  color: #999999;
-  line-height: 28px;
+  /*margin: 25px 0;*/
+  /*padding: 5px;*/
+  font-size: 13px;
+  color: black;
+  line-height: 20px;
 }
 
 ::-moz-selection {
@@ -180,16 +182,16 @@ p {
 
 
 .messages-list {
-    max-height: 200px;
+    max-height: 400px;
     overflow-y: auto;
     overflow-x: hidden;
 }
  
 .message-sent {
     position: relative;
-    background-color: #6495ED;
-    color: white;
-    border-color: #BCE8F1;
+    background-color: rgb(255, 255, 255, 0.5);
+    color: gray;
+    font-size:10pt;
     margin: 5px 20px;
     padding: 10px;
     margin-left:auto;
@@ -200,11 +202,13 @@ p {
 .message-sent-date {
     margin-right: 15px;
     float: right;
+    margin-top: 0px;
 }
  
 .message-received {
-    background-color: #F1F0F0;
-    border-color: #EEEEEE;
+    background-color: rgb(255, 255, 255, 0.5);
+    color: gray;
+    font-size:10pt;
     margin: 5px 20px;
     padding: 10px;
     float: left;
@@ -212,6 +216,7 @@ p {
  
 .message-received-date {
     float: left;
+    margin-top: 0px;
 }
 
 
@@ -222,23 +227,23 @@ submit {
 }
 
 .btn {
-  cursor: pointer;
-  opacity: 0.9;
-  background: #6495ED;
-  border: none;
-  border-radius: 0;
-  color: #fff;
-  font-size: 12px;
-  height: 50px;
-  line-height: 50px;
-  padding: 0 30px;
-  text-transform: uppercase;
-  font-family: 'Do Hyeon';
-  font-size: 16px;
+      cursor: pointer;
+    opacity: 0.9;
+    background: rgba(0, 0, 0, 0);
+    border: 1px solid #6495ED;
+    border-radius: 1;
+    color: #6495ED;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 40px;
+    padding: 0 15px;
+    text-transform: uppercase;
+    font-family: 'Nanum Gothic Coding';
 }
 
 .btn:hover, .btn:focus {
   color: #fff;
+  background: #6495ED;
 }
 
 .padDiv {
@@ -282,6 +287,7 @@ submit {
   margin: 0 0 17px 0;
   border: 1px solid #999;
   padding: 10px;
+  width : 100%;
 }
 
 .paddsection {
@@ -324,17 +330,16 @@ nav {
 
 .nav-menu {
   /*float: right;*/
-  line-height: 70px;
-  margin-bottom: 0;
-  padding-top: 20px;
+  /*line-height: 70px;*/
+  margin-bottom: 20px;
+  padding-top: 30px;
 }
 
 nav ul li {
   float: left;
-  /*margin-right: 15px;*/
   font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  /*margin-left: 40px;*/
+  font-size: 12px;
+  margin-top: 10px;
 }
 
 nav ul li a {
@@ -374,10 +379,10 @@ nav ul li a {
 /*-----------------------------------------------------------------------------------*/
 
 #header {
-  background: url("../assets/main4.png") no-repeat scroll center center / cover;
-  height: 65vh;
+  background: url("../assets/main.png") no-repeat scroll center center / cover;
+  height: 45vh;
   width: 100%;
-  background-size: 28% auto;
+  background-size: cover;
 }
 
 
@@ -542,11 +547,11 @@ nav ul li a {
 #portfolio .portfolio-list .nav li {
   margin: 0 40px 0 0;
   float: left;
-  font-size: 20px;
-  color: #999999;
+  font-size: 16px;
+  color: black;
   line-height: 16px;
   cursor: pointer;
-  font-family: 'Gothic A1', 'Poppins', helvetica;
+  font-family: 'Nanum Gothic Coding', 'Poppins', helvetica;
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: capitalize;
@@ -557,7 +562,15 @@ nav ul li a {
   transition: all 0.5s ease-in-out 0s;
 }
 
-#portfolio .portfolio-list .nav li:hover, #portfolio .portfolio-list .nav li.filter-active  {
+#portfolio .portfolio-list .nav li:hover {
+  color: gray;
+  -moz-transition: all 0.5s ease-in-out 0s;
+  -ms-transition: all 0.5s ease-in-out 0s;
+  -o-transition: all 0.5s ease-in-out 0s;
+  -webkit-transition: all 0.5s ease-in-out 0s;
+  transition: all 0.5s ease-in-out 0s;
+  }
+  #portfolio .portfolio-list .nav li.filter-active  {
   color: #6495ED;
   -moz-transition: all 0.5s ease-in-out 0s;
   -ms-transition: all 0.5s ease-in-out 0s;
@@ -710,6 +723,8 @@ nav ul li a {
   background: #f7f7f7;
   padding-top: 50px;
   padding-bottom: 50px;
+  bottom: 0;
+  width: 100%;
 }
 
 #footer .socials-media {
@@ -802,50 +817,9 @@ i {
   font-size: 12pt;
 }
 
-.centerdiv {
-  text-align:center;
-  margin-top: 30%;
-  margin-bottom: 30%;
-}
 
-.matching-result {
-  font-size: 10pt;
-}
 
-.matching-result h2{
-  color:white;
-}
-.matching-result b{
-  color:white;
-}
-.floating { 
-  position: fixed; 
-  top: 180px; 
-  margin-left: 15px;
-  margin-right: -720px; 
-  text-align:center; 
-  width: 200px; }
 
-.floating div:nth-child(1){ 
-  background-color: #6495ED;
-  border-radius: 10px;
-  color:black;
-  padding:10px;
-}
-
-.review2 {
-  border:1px gray solid;
-  padding:10px;
-  margin:10px;
-}
-
-.review b{
-  font-size:12pt;
-}
-
-.review2 b{
-  font-size:12pt;
-}
 
 [data-tooltip-text]:hover {
 	position: relative;
@@ -872,7 +846,7 @@ i {
 	padding: 7px 12px;
 	position: absolute;
 	width: auto;
-	min-width: 50px;
+	min-width: 100px;
 	max-width: 300px;
 	word-wrap: break-word;
 
@@ -890,3 +864,219 @@ i {
 	left: 0;
 	opacity: 1;
 }
+
+
+.left-floating {
+    color:black;
+    font-size: 11pt;
+}
+
+
+.counter {
+ position:absolute;
+ top: -1px;
+ right: 1px;
+ min-width: 8px;
+ height: 20px;
+ line-height: 20px;
+ margin-top: -11px;
+ padding: 0 6px;
+ font-weight: normal;
+ font-size: small;
+ color: white;
+ text-align: center;
+ text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+ background: 'crimson';
+ border-radius: 11px;
+ background-image: -webkit-linear-gradient(top, #e8616c, #dd202f);
+ background-image: -moz-linear-gradient(top, #e8616c, #dd202f);
+ background-image: -o-linear-gradient(top, #e8616c, #dd202f);
+ background-image: linear-gradient(to bottom, #e8616c, #dd202f);
+ -webkit-box-shadow: inset 0 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px rgba(0, 0, 0, 0.12);
+ box-shadow: inset 0 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px rgba(0, 0, 0, 0.12);
+}
+.cenbox{
+   position: absolute;
+   width: 500px;
+   left: 50%;
+   top: 50%;
+   margin-left: -250px;
+   margin-top: -250px;
+   margin-bottom: 100px;
+   border: 1px #d9d9d9 solid;
+   background: white;
+   text-align: center;
+   font-family: 'Nanum Gothic Coding', monospace;
+   padding:70px 10px 70px 10px;
+}
+
+.input100{
+    background-color:#fafafb;
+    border: 1px #d9d9d9 solid;
+    width:230px;
+    padding:10px;
+    margin:10px;
+  }
+  
+  .login100-form-btn {
+    border: 1px #B0C4DE solid;
+    border-radius:10px;
+    background-color:#B0C4DE;
+    padding:10px;
+    width:230px;
+    margin:10px;
+    color:white;
+    font-weight:bold;
+  }
+  
+  .login100-form-btn:hover {
+    border: 1px #e6e6e6 solid;
+    border-radius:10px;
+    background-color:#e6e6e6;
+  }
+  
+input[type="checkbox"], input[type="radio"]{
+	position: absolute;
+	right: 9000px;
+}
+
+/*Check box*/
+input[type="checkbox"] + .label-text:before{
+	content: "\f096";
+	font-family: "FontAwesome";
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing:antialiased;
+	width: 1em;
+	display: inline-block;
+	margin-right: 2px;
+}
+
+input[type="checkbox"]:checked + .label-text:before{
+	content: "\f14a";
+	color: #6495ed;
+	animation: effect 250ms ease-in;
+}
+
+input[type="checkbox"]:disabled + .label-text{
+	color: #aaa;
+}
+
+input[type="checkbox"]:disabled + .label-text:before{
+	content: "\f0c8";
+	color: #ccc;
+}
+
+
+/*Radio box*/
+
+input[type="radio"] + .label-text:before{
+	content: "\f10c";
+	font-family: "FontAwesome";
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing:antialiased;
+	width: 1em;
+	display: inline-block;
+	margin-right: 5px;
+}
+
+input[type="radio"]:checked + .label-text:before{
+	content: "\f192";
+	color: #6495ed;
+	animation: effect 250ms ease-in;
+}
+
+input[type="radio"]:disabled + .label-text{
+	color: #aaa;
+}
+
+input[type="radio"]:disabled + .label-text:before{
+	content: "\f111";
+	color: #ccc;
+}
+  
+@keyframes effect{
+	0%{transform: scale(0);}
+	25%{transform: scale(1.3);}
+	75%{transform: scale(1.4);}
+	100%{transform: scale(1);}
+}
+
+
+/*match css*/
+
+.matchtable {margin:auto;}
+    .matchtable td {padding:20px;}
+    cap {font-size:10pt;font-weight:bold;display:inline;}
+    .matchingbtn {
+        cursor: pointer;
+        opacity: 0.9;
+        background: #6495ED;
+        border: none;
+        border-radius: 20px;
+        color: #fff;
+        font-size: 12px;
+        height: 50px;
+        line-height: 50px;
+        padding:0px 30px;
+        font-family: 'Do Hyeon';
+        font-size: 16px;}
+    
+    #about td { padding-right:10px; }
+    
+.datetable td {
+  padding:2px 15px;
+}
+
+.datetable tr {
+  padding:2px 15px;
+}
+
+.datetable {
+  margin-left:20px;
+}
+
+.checkbox-info {
+  background: url(../assets/note.png) no-repeat ;
+  background-size: 800px auto;
+}
+
+
+.modal-mycontent {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    outline: 0;
+}    
+
+.chatuserlist {
+    width: 250px;
+    color: white;
+    font-weight: bold;
+    background-color: rgb(100, 149, 237, 0.6);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.panel-body li {
+  margin-left: 20px;
+}
+
+

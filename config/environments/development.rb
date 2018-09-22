@@ -8,7 +8,7 @@ Rails.application.configure do
     port:                 587,
     domain:               'mail.google.com',
     user_name:            'fishsong2@gmail.com',
-    password:             'Whthddl55!',
+    password:             ENV["Password"],
     authentication:       'plain',
     enable_starttls_auto: true  }
   # In the development environment your application's code is reloaded on

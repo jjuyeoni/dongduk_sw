@@ -1,35 +1,52 @@
-<div class="container">
-<div style="border:2px lightgray solid; border-radius:20px; padding:25px; margin-bottom:40px;font-size:12pt">
-<h1><i class="fab fa-searchengin" style="font-size:30pt"></i>&nbsp;&nbsp;빠른 탐색</h1>
-<hr>
-<%= form_tag("/match/search", method: "post") do %>
-    <h3>유저 정보</h3><br>
-    성별: 
-    <%=radio_button_tag 'sex', 'all', checked: true %> 무관
-    <%=radio_button_tag 'sex', 'F' %> 여자
-    <%=radio_button_tag 'sex', 'M' %> 남자
-    <br>
-    학교: 
-    <%=radio_button_tag 'school', 'all', checked: true %> 무관
-    <%=radio_button_tag 'school', 'my' %> 학우
-    <%=radio_button_tag 'school', 'other'%> 타학교
-    <br>
-    학번:
-    <div data-role="rangeslider" data-mini="true">
-        <span id="maxValue"><%=@time - 10%></span> ~ <span id="minValue"><%=@time%></span><br>
-        <input name="st" id="st" class="slide" type="range" min="<%=@time - 10%>" max="<%=@time - 6 %>" value="<%=@time - 10%>" data-highlight="true" onchange="document.getElementById('maxValue').innerHTML=this.value;">
-        <input name="en" id="en" class="slide" type="range" min="<%=@time - 5%>" max="<%=@time %>" value="<%=@time%>" data-highlight="true" onchange="document.getElementById('minValue').innerHTML=this.value;">
-    </div>
+
+<div id="about" class="paddsection">
+    <div class="container">
+        <div class="checkbox-info" style=";margin:auto;font-size:12pt;font-family: 'Nanum Gothic Coding', monospace; padding:20px 50px;width:800px">
+            <%= form_tag("/match/search", method: "post", :style => 'margin-top:70px') do %>
+                    <cap>성별 |</cap>  
+                    <label><%=radio_button_tag 'sex', 'all', checked: true %> <span class="label-text">무관</span></label>
+                    <label><%=radio_button_tag 'sex', 'F' %> <span class="label-text">여자</span></label>
+                    <label><%=radio_button_tag 'sex', 'M' %> <span class="label-text">남자</span></label>
+                    <br><br>
+                    <cap>학교 |</cap> 
+                    <label><%=radio_button_tag 'school', 'all', checked: true %> <span class="label-text">무관</span></label>
+                    <label><%=radio_button_tag 'school', 'my' %> <span class="label-text">학우</span></label>
+                    <label><%=radio_button_tag 'school', 'other'%> <span class="label-text">타학교</span></label>
+                    <br><br>
+                    <cap>학번 |</cap>
+                    <div data-role="rangeslider" data-mini="true" style="display:inline;">
+                        <span id="maxValue"><%=@time - 10%></span> ~ <span id="minValue"><%=@time%></span>&nbsp;
+                        <input name="st" id="st" class="slide" type="range" min="<%=@time - 10%>" max="<%=@time - 6 %>" value="<%=@time - 10%>" data-highlight="true" onchange="document.getElementById('maxValue').innerHTML=this.value;">
+                        <input name="en" id="en" class="slide" type="range" min="<%=@time - 5%>" max="<%=@time %>" value="<%=@time%>" data-highlight="true" onchange="document.getElementById('minValue').innerHTML=this.value;"><br>
+                    </div>
+                    <br>
+                    <cap>카테고리 |</cap>
+                    <% for i in 0..5 %>
+                        <label>
+                        <input type="checkbox" name="category[category][]" value="<%=@category[i]%>" <%if i == 0 %> checked <%end%> > 
+                        <span class="label-text"><%=@category[i]%></span>
+                        </label>
+                    <% end %>
+                    <br><br>
+                    <cap>지역 |</cap>
+                    <table>
+                        <% for i in 0..25 %>
+                        
+                            <% if (i+1) % 4 == 1 %> <tr> <% end %>
+                                <td>
+                                    <label>
+                                    <input type="checkbox" name="address[address][]" value="<%=@address[i]%>" <% if @address[i] == '전체'%> checked <% end %>> 
+                                    <span class="label-text"><%=@address[i]%> </span>
+                                    </label>
+                                </td>
+                            <% if (i+1) % 4 ==  0 %> </tr> <% end %>
+                        <% end %>
+                    </table>
+				
+       <button type="submit" class="btn" style="float:right">찾기 <i class="fas fa-search"></i></button>
     
-    <br>
-    나중에 지역
-    <hr>
-    <h3>글정보</h3><br>
-    <% for i in 0..5 %>
-        <input type="checkbox" name="category[category][]" value="<%=@category[i]%>" <%if i == 0 %> checked <%end%> > <%=@category[i]%>
-    <% end %>
-    <%=submit_tag '찾기' , class: 'btn', :style => 'float:right'%>
-<% end %>
-<br>
+ <% end %>  
+<br><br><br><br><br>
+</div>
 </div>
 </div>

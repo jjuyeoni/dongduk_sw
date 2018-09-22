@@ -1,6 +1,7 @@
 class CreatePosts < ActiveRecord::Migration[5.2]
   def change
     create_table :posts do |t|
+      t.string :state
       t.string :title
       t.text :content
       t.string :category
@@ -9,7 +10,8 @@ class CreatePosts < ActiveRecord::Migration[5.2]
       t.string :lat
       t.string :lon
       t.references :user, foreign_key: true
-      t.string :image_url, :default => ""
+      t.string :image
+      t.boolean :sns
       
       t.timestamps
     end

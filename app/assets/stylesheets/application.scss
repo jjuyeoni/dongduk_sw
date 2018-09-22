@@ -34,6 +34,13 @@ ul {
   float: right;
 }
 
+.message-sent-date {
+    margin-right: 15px;
+    float: right;
+    margin-top: 0px;
+}
+
+
 
 .message-received {
   background-color: #F1F0F0;
@@ -41,5 +48,10 @@ ul {
   margin: 5px 20px;
   padding: 10px;
   float: left;
+}
+
+.message-received-date {
+    float: left;
+    margin-top: 0px;
 }
 

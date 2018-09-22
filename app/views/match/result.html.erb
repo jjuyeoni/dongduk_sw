@@ -1,101 +1,161 @@
-<div class="floating"> 
-<div class="matching-result">
-    <h2>빠른탐색</h2>
-    <br> <b>성별</b> <br>
-    <%= @sex %> <br> 
-    <br> <b>학교</b> <br>
-    <%=@school%>  <br>  
-    <br> <b>학번</b> <br> <%= @start_sid%> ~ <%= @end_sid%> 
-    <br>
-</div>
-<br>
+<Style>
+    .container {
+    overflow: hidden;
+}
 
-<b style="font-size:12pt">평점</b>
+.filterDiv {
+    float: left;
+    display: none; /* Hidden by default */
+}
+
+.show {
+    display: block;
+}
+
+.category {
+  border: none;
+  outline: none;
+  padding: 0px 2px 0px 2px;
+  background-color: rgba(255, 255, 255, 0);
+  color: gray;
+  cursor: pointer;
+  
+  
+}
+
+/* Add a light grey background on mouse-over */
+.category:hover {
+  background-color: #ddd;
+  color:white;
+}
+
+/* Add a dark background to the active button */
+.category.active {
+  border: none;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0);
+  color: #6495ed;
+}
+</Style>
+<div id="about" class="paddsection">
+<div class="container">
+  
+  <div class="row">
+        <div class="col-md-12">
+
+  <div class="left-floating">
+    <br> <cap>성별 |&nbsp;</cap> 
+    <%= @sex %> &nbsp;
+    <cap>학교 |&nbsp;</cap> 
+    <%=@school%> &nbsp;&nbsp;  
+    <cap>학번 |&nbsp;</cap>  <%= @start_sid%> ~ <%= @end_sid%> <br>
+    <cap>지역 |&nbsp;</cap> 
+<%@address.each do |a|%>
+    <%=a%>
+<%end%>
+
+<div id="categories">
+<cap>카테고리 |&nbsp;</cap>  
+      <ul class="nav list-unstyled" id="portfolio-flters" style="display:inline">
+        <li class="category active" data-filter=".all" style="display:inline">전체</li>
+        <%@category.each do |a|%>
+            <li class="category" data-filter=".<%=a%>" style="display:inline"><%=a%></li>
+        <%end%>
+      </ul>
+          
+</div>
+
 <ul id="filters">
-    <li>
+  <cap>평점 |&nbsp;</cap>      
+    <li style="display:inline">
+      
+      <label>
         <input type="checkbox" name="fil" value="1" id="filter-1"  />
-        <label for="filter-1" style="color:gold">★</label>
-    </li>
-    <li>
+         <span class="label-text"><label for="filter-1" style="color:gold">★</label></span>
+      </label>
+    
+      <label>
         <input type="checkbox" name="fil" value="2" id="filter-2"  />
-        <label for="filter-2" style="color:gold">★★</label>
-    </li>
-    <li>
+        <span class="label-text"><label for="filter-2" style="color:gold">★★</label></span>  
+      </label>
+    
+      <label>
         <input type="checkbox" name="fil" value="3" id="filter-3"  />
-        <label for="filter-3" style="color:gold">★★★</label>
-    </li>
-    <li>
+        <span class="label-text"><label for="filter-3" style="color:gold">★★★</label></span>  
+    </label>
+    
+      <label>
         <input type="checkbox" name="fil" value="4" id="filter-4"  />
-        <label for="filter-4" style="color:gold">★★★★</label>
-    </li>
-     <li>
+        <span class="label-text"><label for="filter-4" style="color:gold">★★★★</label></sapn>
+      </label>
+    
+       <label>
         <input type="checkbox" name="fil" value="5" id="filter-5"  />
-        <label for="filter-5" style="color:gold">★★★★★</label>
+        <span class="label-text"><label for="filter-5" style="color:gold">★★★★★</label></span>
+    </label>
     </li>
 </ul>
 </div>
-<div class="container">
-<br>
-<%if @result.count == 0 %>
-    <div class="centerdiv"><h3><i class="fas fa-exclamation-triangle" style="font-size:25pt;color:Crimson"></i> &nbsp;해당 조건에 일치하는 결과가 없습니다</h3></div>
-<%else%>
+    
 <hr>
- <div id="portfolio" class="text-center paddsections">
- <div class="row">
-        <div class="col-md-12">
+
+<%if @result.count == 0 %>
+    <div id="portfolio" class="text-center paddsections">
+      <h3><i class="fas fa-exclamation-triangle" style="font-size:25pt;color:Crimson"></i> &nbsp;해당 조건에 일치하는 결과가 없습니다</h3>
+    </div>
+<%else%>
          
-         <div class="portfolio-list">
-            
-            <ul class="nav list-unstyled" id="portfolio-flters">
-              <li class="filter filter-active" data-filter=".all">전체</li>
-              <%@category.each do |a|%>
-                <li class="filter" data-filter=".<%=a%>"><%=a%></li>
-              <%end%>
-            </ul>
-  
-          </div> 
-          
            <div class="portfolio-container">
             <% @result.each do |x| %>
-            <div class="<%=User.find(x.user_id).rate%>">
-              <div class="col-lg-4 col-md-6 portfolio-thumbnail all <%=Post.find(x.post_id).category%>">
+            <div class="">
+    
+              <div class="filterDiv <%=Post.find(x.post_id).category%> col-lg-3 col-md-6 portfolio-thumbnail all <%=User.find(Post.find(x.post_id).user_id).rate%>">
+                <div style="border: 1px solid rgba(0, 0, 0, 0.23);">
+                  
                   <a href="/posts/<%=x.post_id%>" class="portfolio-box">
-                   
-                    <img src='/assets/blog-post-1.jpg' alt='img'>   
+                  <div> 
+                    <% if Post.find(x.post_id).image.main.url.nil? %>
+                      <img src="/assets/giventake.png" alt="img">
+                    <% else %>
+                      <img src='<%= Post.find(x.post_id).image.main %>' alt='img'>   
+                    <% end %>
+                    </div>
+                    
+                    <div style="font-size: 10pt; text-align: left; padding:15px;">
+                      <p>[<%=Post.find(x.post_id).category%>] <%= Post.find(x.post_id).title %>
+                      <% if Post.find(x.post_id).state != "-1" %>
+                      <span class="badge badge-danger">마감</span>
+                      <%end%></p>
+                      <p><cap><i class='bx bx-map'></i><%= Post.find(x.post_id).address[0] %> |</cap> <%= User.find(Post.find(x.post_id).user_id).name %></p>
+                    </div>
                     <div class='portfolio-box-caption'>
-                      <div class='portfolio-box-caption-content'>
-                        <div class='project-category text-faded'>
-                         <%=Post.find(x.post_id).title%>
-                        </div>
-                        <div class='project-name'>
-                          <%=Post.find(x.post_id).category%>
-                        </div>
-                      </div>
+                      
                     </div>
                   </a>
+                </div>
               </div>
+              
               </div>
+              
             <% end %>
-          </div>
-        </div>
-      </div>
-</div>
-
-
-
-                        
+            
 
 
 <%end%>
+
+
 </div>
+</div>
+</div></div>
 
 
-<br>
+
 
 
 
 <script>
     $("#filters :checkbox").change(function() {
+      
    $("#filters :checkbox:not(:checked)").each(function() {
        var objs = document.getElementsByClassName($(this).val());
        for( var i = 0; i < objs.length; i++ ){
@@ -112,5 +172,52 @@
 });
 
 
+filterSelection("all")
+function filterSelection(c) {
+  var x, i;
+  x = document.getElementsByClassName("filterDiv");
+  if (c == "all") c = "";
+  // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
+  for (i = 0; i < x.length; i++) {
+    RemoveClass(x[i], "show");
+    if (x[i].className.indexOf(c) > -1) AddClass(x[i], "show");
+  }
+}
+
+// Show filtered elements
+function AddClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    if (arr1.indexOf(arr2[i]) == -1) {
+      element.className += " " + arr2[i];
+    }
+  }
+}
+
+// Hide elements that are not selected
+function RemoveClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    while (arr1.indexOf(arr2[i]) > -1) {
+      arr1.splice(arr1.indexOf(arr2[i]), 1); 
+    }
+  }
+  element.className = arr1.join(" ");
+}
+
+// Add active class to the current control button (highlight it)
+var categories = document.getElementById("categories");
+var categorys = categories.getElementsByClassName("category");
+for (var i = 0; i < categorys.length; i++) {
+  categorys[i].addEventListener("click", function() {
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+  });
+}
 
 </script>

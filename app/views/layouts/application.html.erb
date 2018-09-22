@@ -31,11 +31,7 @@
 
     <!-- Bootstrap CSS File -->
     <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
-    
-    <!--tooltip CSS File-->
-   <link rel="stylesheet"  href="/assets/default.css" />
-		<link rel="stylesheet" href="/assets/component.css" />
-    
+
     <!-- Libraries CSS Files -->
     <link href="/assets/ionicons/css/ionicons.min.css" rel="stylesheet">
     <link href="/assets/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -53,11 +49,79 @@
     
     <!-- fontawesome Icon -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  
+    <!--boxicons-->
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@1.7.1/css/boxicons.min.css' rel='stylesheet'>
+    
+    
+
   </head>
 
   <body>
+<style>
+/**************************Tooltip starts*************************/
 
+.tooltipMenu{
+  min-height: 100px;
+  width: 150px;
+  /*border: 1px solid #0d77b6;*/
+}
+
+.tooltipMenu ul li{
+  padding: 10px 20px 10px 20px;
+  font-family: sans-serif;
+  font-size: 15px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.tooltipMenu ul{
+  box-shadow: 5px 5px 20px grey;
+}
+
+.tooltipMenu ul li:hover{
+  /*background: #0d77b6;*/
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+/**************************Tooltip ends*************************/
+
+.tooltip{
+  position: relative;
+  display: inline-block;
+}
+
+.tooltipMenu {
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+}
+
+nav ul span:hover .tooltipMenu{
+  visibility: visible;
+  cursor: pointer;
+}
+
+.bottomSide {
+  top: 100%;
+}
+
+.bottomSide.tooltipMenu::after {
+    bottom: 100%;
+    left: 45%;
+    border-color: transparent transparent white transparent;
+}
+
+.tooltipMenu ul li a {
+    font-size: 12px;
+    font-family: 'Gothic A1';
+}
+
+
+</style>
       <!-- start section navbar -->
+      <% if request.fullpath != "/users/sign_in" && request.fullpath != "/users/sign_up" %>
       <nav class="navbar" id="main-nav">
         <div class="row">
           <div class="container">
@@ -71,48 +135,60 @@
             <ul class="nav-menu list-unstyled">
               <div class="row">
               <div class="col-lg-2 middle"><li class="nav-item">
+                <a href="/" class="smoothScroll",  style= "display: inline-block;" >주거니받거니</a>
+              </li></div>
+              <div class="col-lg-2 middle"><li class="nav-item">
                 <a href="/about/about" class="smoothScroll",  style= "display: inline-block;" >서비스소개</a>
+                
               </li></div>
-              <div class="col-lg-2 middle"><li style= "display: inline-block; text-align:center">
-                <a href="/match/index"  class="smoothScroll",  style= "display: inline-block">빠른탐색</a>
-              </li></div>
-              <div class="col-lg-4 middle"><li>
-                  <a href="/" class="smoothScroll",  style= "display: inline-block;"><h1 style="font-size:55px; font-weight:700;">주거니받거니</h1></a>
-              </li></div>
+              <div class="col-lg-4 middle">
+                <%= form_tag posts_path, :style =>"border:2px #6495ED solid;padding:7px;width:100%;vertical-align:middle;", :method => :get do %>
+                  <i class="fas fa-search" style="color:#6495ED;display:inline;font-size:12pt;vertical-align:middle;"></i>
+                  <%= text_field_tag :search, params[:search], :style => "border:none;width:90%;vertical-align:middle;"%>
+                <% end %>
+              </div>
              
               <% if user_signed_in? %>
-                 <div class="col-lg-2 middle"><li>
-                  <a href="/posts/new"  class="smoothScroll",  style= "display: inline-block;">글작성</a>
+                 <div class="col-lg-2 middle"><li class="nav-item">
+                  <a href="/match/index"  class="smoothScroll",  style= "display: inline-block">빠른탐색</a>
                 </li></div>
-                <div class="col-lg-2 middle"><li class="nav-item dropdown">
-                  <a href="#" class="smoothScroll",  style= "display: inline-block;" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <%= current_user.name %>님
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/mypage/mypage" style="display: inline-block;">마이페이지</a>
-                    <%=link_to '로그아웃', destroy_user_session_path, :class => "dropdown-item", method: 'delete'%>
-                  </div>
-                </li></div>
+                
+                <div class="col-lg-1 middle">
+                  <a href="/posts/new"  class="smoothScroll",  style="display:inline-block;"><i class='bx bx-pencil bx-md'></i></a>
+                </div>
+                <div class="col-lg-1 middle">
+                  <a href="/mypage" class="smoothScroll",  style="display:inline-block;">
+                    <i class='bx bx-user-circle bx-md'>
+                    </i></a>
+                    
+                    <% if current_user.new_notifications.unread_by(current_user).count  > 0%>
+                    <span class="counter">
+                        <%= current_user.new_notifications.unread_by(current_user).count %>
+                    <div class='tooltipMenu bottomSide'>
+                      <ul>
+                          <%= render partial: "new_notifications/new_notification", collection: current_user.new_notifications.unread_by(current_user) %>
+                          <li><b><%= link_to '모든 알림 지우기'.html_safe, new_notifications_read_all_path %></b></li>
+                        </ul>
+                    </div>
+                   </span>
+                    
+                    <% end %>
+                </div>
               <% else %>
-                <div class="col-lg-2 middle"><li>
+                <div class="col-lg-2 middle"><li class="nav-item">
                   <%=link_to '회원가입', new_user_registration_path, :class => "smoothScroll",  :style => "display: inline-block;" ,method: 'get' %>
                 </li></div>
-                <div class="col-lg-2 middle"><li>
+                <div class="col-lg-2 middle"><li class="nav-item">
                   <%=link_to '로그인', new_user_session_path, :layout => "useer-application", :class => "smoothScroll",  :style => "display: inline-block;" ,method: 'get' %>
                 </li></div>
               <%end%>
             </div>
-              <!--<li><a href="#about" class="smoothScroll">About</a></li>-->
-              <!--<li><a href="#portfolio" class="smoothScroll">Portfolio</a></li>-->
-              <!--<li><a href="#journal" class="smoothScroll">Blog</a></li>-->
-              <!--<li><a href="#contact" class="smoothScroll">Contact</a></li>-->
-              
             </ul>
     
           </div>
         </div>
       </nav>
-  
+<% end %>
       <!-- End section navbar -->
 
     
@@ -125,35 +201,17 @@
     
   
     <!-- start section footer -->
-    <div id="footer" class="text-center">
-      <div class="container">
-        <div class="socials-media text-center">
+    <% if request.fullpath != "/users/sign_in" && request.fullpath != "/users/sign_up" %>
+    <div id="footer">
+      <div style="margin-top:10px; margin-bottom:10px; margin-left:50px">
+        
   
-          <ul class="list-unstyled">
-            <li><a href="#"><i class="ion-social-facebook"></i></a></li>
-            <li><a href="#"><i class="ion-social-twitter"></i></a></li>
-            <li><a href="#"><i class="ion-social-instagram"></i></a></li>
-            <li><a href="#"><i class="ion-social-googleplus"></i></a></li>
-            <li><a href="#"><i class="ion-social-tumblr"></i></a></li>
-            <li><a href="#"><i class="ion-social-dribbble"></i></a></li>
-          </ul>
-  
-        </div>
-  
-        <p>&copy; Copyrights Folio. All rights reserved.</p>
-  
-        <div class="credits">
-          <!--
-            All the links in the footer should remain intact.
-            You can delete the links only if you purchased the pro version.
-            Licensing information: https://bootstrapmade.com/license/
-            Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Folio
-          -->
-          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-        </div>
-  
+        <p style="margin-bottom: 0px;">동덕여자대학교 | 박보람 | 조송이 | 차주연</p>
+        <p>서울특별시 성북구 화랑로13길 60 인B313호</p>
+        <h4>ⓒ 주거니받거니 2018</h4>
       </div>
     </div>
+<% end %>
     <!-- End section footer -->
   
   
@@ -172,9 +230,5 @@
     <!-- Template Main Javascript File -->
     <script src="/assets/main.js"></script>
     <script src="/assets/modernizr.custom.js"></script>
-    <script src="/assets/cbpTooltipMenu.min.js"></script>
-		<script>
-			var menu = new cbpTooltipMenu( document.getElementById( 'cbp-tm-menu' ) );
-		</script>
   </body>
 </html>

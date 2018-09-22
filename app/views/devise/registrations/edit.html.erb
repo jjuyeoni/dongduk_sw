@@ -1,55 +1,98 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<style>
+    div.container_confirm {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 80px;
+        width: 40%;
+        margin: 50px auto 100px auto
+    }
+    .img {width:140px; height:140px;}
+    .basis_img {width:100px; height:100px;}
+</style>
 
+<div id="about" class="paddsection">
+    <div class="container">
+      <div class="container_confirm">
+<h3 align="center">사진 수정</h3><br>
+
+<div class="image_form" style="margin-bottom:100px">
+  <font size ="4">프로필</font><br>
+  <% if current_user.profile_img.url.nil? %>
+        <img src="/assets/user.png" class="basis_img" alt="profile">
+        <p>프로필이 없습니다. 프로필을 등록해주세요</p> &nbsp;
+        <%= form_tag("/img_save", method: "post", multipart: true) do %>
+          <%= file_field_tag :profile_img, accept:'image/png,image/gif,image/jpg,image/jpge'%>
+          <%= submit_tag '등록' %>
+        <% end %>
+        <% else %>
+        <img src='<%= current_user.profile_img %>' class='img'> <br>
+        <%= form_tag("/img_save", method: "post", multipart: true) do %>
+          <%= file_field_tag :profile_img, accept:'image/png,image/gif,image/jpg,image/jpge'%><br>
+           <%= submit_tag '등록', :class => 'btn', :style => 'float:right' %>
+        <% end%>
+         <% end %>
+  </div>
+  
+  <h3 align="center">정보 수정</h3><br>
+    <center><i>(수정하고 싶은 항목만 채워주세요)</i></center><br>
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { :class => "login100-form validate-form flex-sb flex-w", method: :put }) do |f| %>
   <%= devise_error_messages! %>
-  
-  <%= f.label :email %>
+
+  <%= f.label :name, "이름"%><br>
   <div class="wrap-input100 validate-input m-b-16">
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" , :class => 'input100'%>
+    <%= f.text_field :name, autofocus: true, autocomplete: "name", :class => 'input100'%><br>
+  <span class="focus-input100"></span>
+  </div>
+  
+  
+  <%= f.label :sex, "성별" %><br>
+  <label><%=f.radio_button :sex, 'F' %> <span class="label-text">여자</span></label>
+  <label><%=f.radio_button :sex, 'M' %> <span class="label-text">남자</span></label>
+  
+  <br>
+  
+  <div class="wrap-input100 validate-input m-b-16">
+    <%= f.text_field :instagram, :class => 'input100', autocomplete: "instagram",:placeholder => 'Instagram 계정 예) song2jo' %><br>
+    <%= f.text_field :twitter, :class => 'input100', autocomplete: "twitter",:placeholder => 'Twitter 계정 예) song2jo' %>
     <span class="focus-input100"></span>
   </div>
-
+  
+  
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>
 
-  <%= f.label :password %> 
+  <%= f.label :password, "비밀번호" %><br />
   <% if @minimum_password_length %>
-      <i><%= @minimum_password_length %> characters minimum</i>
+    <i>(최소 <%= @minimum_password_length %>자 이상)</i>
     <% end %><br />
-    <i>(leave blank if you don't want to change it)</i>
   <div class="wrap-input100 validate-input m-b-16">
     <%= f.password_field :password, autocomplete: "off" , :class => 'input100'%>
     <span class="focus-input100"></span>
   </div>
 
-  <%= f.label :password_confirmation %><br />
+  <b>비밀번호 확인</b>
   <div class="wrap-input100 validate-input m-b-16">
     <%= f.password_field :password_confirmation, autocomplete: "off" , :class => 'input100'%>
     <span class="focus-input100"></span>
   </div>
   
-<%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+<%= f.label :current_password, "현재 비밀번호 확인(*필수)"%><br> 
   <div class="wrap-input100 validate-input m-b-16">
-    <%= f.password_field :current_password, autocomplete: "off" , :class => 'input100'%>
+    <%= f.password_field :current_password, autocomplete: "off" , :class => 'input100'%></br></br>
     <span class="focus-input100"></span>
   </div>
   
-  <div class="wrap-input100 validate-input m-b-16"><br>
-    <center><%= f.radio_button :sex, "F" %> Female  &nbsp; <%= f.radio_button :sex, "M" %> Male</center>
-    <br>
-    <span class="focus-input100"></span>
-  </div>
   
-  <div class="wrap-input100 validate-input m-b-16"><br>
-    <center><a href="/users/confirm">학교수정 및 인증</a></center>
-    <br>
-    <span class="focus-input100"></span>
-  </div>
-
-  <div class="actions" style="margin:auto">
-    <%= f.submit "수정완료" , :class => 'login100-form-btn'%>
-  </div>
+  
+    <%= f.submit "수정", :class => 'btn', :style => 'float:right'%>
 <% end %>
 
-<%= link_to "탈퇴", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, :style => 'float:right'%><br>
+<%= button_to "탈퇴", registration_path(resource_name), :class => 'btn', data: { confirm: "정말 탈퇴하시겠습니까?" }, method: :delete, :style => 'float:left'%><br><br><br><br>
+
+<div class="text-center">
+<h3>학교 인증</h3><br><br>
+<%= button_to "수정 및 인증", users_confirm_path, :class => 'btn', method: :get %>
+</div>
+</div>
+</div></div>

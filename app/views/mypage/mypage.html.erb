@@ -3,201 +3,267 @@
   .topinfo th{text-align:center; padding:5px;}
   .num {font-size:25pt;text-align:center; padding:5px;}
   th {padding-right:10px;}
- 
-  
+  .img {width:150px; height:150px;}
+  .basis_img {width:150px; height:150px;}
+  .mypage_content {color:black;}
 </style>
 
-<div class="container">
-
-<div style="border:2px lightgray solid; border-radius:20px; padding:20px; margin-bottom:40px">
-
-  <h1><%= current_user.name %>님</h1>
+<div id="about" class="paddsection">
+  <div class="container" style="font-family: 'Gothic A1', sans-serif;">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="row" style="border:1px lightgray solid; padding:20px; margin-bottom:40px">
+          <div class="col-lg-12">
+            <div class="text-center">
+              <div style="margin-bottom:30px">
+                <% if current_user.profile_img.url.nil? %>
+                  <img src="/assets/user.png" class="rounded-circle basis_img" alt="profile">
+                <% else %>
+                  <img src='<%= current_user.profile_img %>' class="rounded-circle img">
+                <% end %>
+              </div>
+              <p style="font-size:11pt;"><b><%= current_user.name %></b> | <%if current_user.sex == 'F' %> 여 <%else%> 남 <%end%> | 
+              <% if current_user.confirmed_portal == false %>
+              <a href="/users/confirm"><span class="badge badge-primary">학교인증</span></a>
+              <% else %>
+              <%= current_user.school %>
+              <% end %></p>
+              
+              <p><% if current_user.rate != -1 %>
+                <a data-toggle="modal" data-target="#myModal"> 
+                <% for i in 1..current_user.rate %>
+                  <i class="fas fa-star" style="color:#ffe44d"></i>
+                <% end %><b>( <%=current_user.rate %> )</b>
+                </a>
+              <% else %>
+               <b>평점 정보 없음</b>
+              <% end %></p> 
+              
+              <p><div class="row">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-2 text-center"><%= link_to edit_user_registration_path, method: 'get' do %><i class="fas fa-user-edit"></i><%end%></div>
+                <div class="col-lg-2 text-center"><%= link_to destroy_user_session_path, method: 'delete' do %><i class="fas fa-sign-out-alt"></i><%end%></div>
+                <div class="col-lg-4"></div>
+              </div></p>
+            </div>
+            <hr>
+            <div>
+              <ul class="nav nav-tab" style="display:block;" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" style="font-weight:bold"><i class="far fa-edit"></i> 내가 쓴 글&nbsp;( <%=@posts.count%> )</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false" style="font-weight:bold"><i class="far fa-star"></i> 스크랩한 글&nbsp;( <%=@scraps.count%> )</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" style="font-weight:bold"><i class="fas fa-sign-out-alt"></i> 신청한 글&nbsp;( <%=@applies.count%> )</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="apps-tab" data-toggle="tab" href="#apps" role="tab" aria-controls="apps" aria-selected="false" style="font-weight:bold"><i class="fas fa-sign-in-alt"></i> 받은 신청서&nbsp;( <%= @badunapp.count %> )</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false" style="font-weight:bold"><i class="fas fa-exchange-alt"></i> 매칭된 글&nbsp;( <%=@matchinguser.count + @matchinguser2.count%> )</a>
+                </li>
+                <li class="nav-item">
+                  <%= link_to home_index_path, method: 'get', :class => 'nav-link', :style => 'font-weight:bold' do %><i class="fas fa-comments"></i> 실시간 소통방<%end%>
+                </li>
+              </ul>
+          </div>
+        </div>
+      </div> 
+    </div> <!-- col-lg-3 -->
   
-  <% if current_user.confirmed_portal == false %>
-    <a href="/users/confirm" style="border:1px lightgray solid;padding:5px;text-size:5px;">인증하러가기</a>
-  <% else %>
-    <b><%= current_user.school %></b>
-  <% end %>
+    <div class="col-lg-1"></div>
   
-  <a href="/home/index" class="btn btn-info" role="button" style="float:right;display:inline">CHAT</a>
-  <hr>
-  
-  <div style="float:right;font-size:10pt">
-    <% if current_user.rate != -1 %>
-  <a href="/<%=current_user.id%>/review/index"> 
-  <% for i in 1..current_user.rate %>
-        <img src="/assets/star.png" width="20px" height="20px">
-  <% end %><b>( <%=current_user.rate %> )</b>
-  </a>
-  <% end %>
-  <br>
-    <%=link_to '정보수정', edit_user_registration_path, :class => "smoothScroll",  :style => "display: inline-block;" ,method: 'get' %>
-  </div>
-  <br><br>
- <table class="topinfo" align="center" >
-   <tr>
-     <td rowspan="2"> <img src="/assets/mpscrap" width="50" height="auto"> </td>
-     <th> 스크랩 </th>
-     <td rowspan="2"> <img src="/assets/mpapp" width="50" height="auto" style="margin-left:50px"> </td>
-     <th> 나의 신청서 </th>
-     <td rowspan="2"> <img src="/assets/mpbad" width="50" height="auto" style="margin-left:50px"> </td>
-     <th> 받은 신청서 </th>
-   </tr>
-   <tr>
-     <td class="num"> <%=@scraps.count%> </td>
-     <td class="num"> <%=@applies.count%> </td>
-     <td class="num"> <%=@badunapp.count%> </td>
-   </tr>
- </table>
-</div>
-
-<ul class="nav nav-tab nav-justified" id="myTab" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" style="font-weight:bold">내가 쓴 글( <%=@posts.count%> )</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" style="font-weight:bold">신청한 글( <%=@applies.count%> )</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="messages-tab" data-toggle="tab" href="#messages" role="tab" aria-controls="messages" aria-selected="false" style="font-weight:bold">스크랩한 글( <%=@scraps.count%> )</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="apps-tab" data-toggle="tab" href="#apps" role="tab" aria-controls="apps" aria-selected="false" style="font-weight:bold">받은 신청서 ( <%= @badunapp.count %> )</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false" style="font-weight:bold">매칭된 글( <%=@mapplies.count%> )</a>
-    </li>
-</ul>
-<br>
-<!-- Tab panes -->
-<div class="tab-content">
-  <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
-      
-      <table class="table table-hover">
-          <thead>
-              <tr>
-                <th>제목</th>
-                <th>작성시간</th>
+  <!-- Tab panes -->
+  <div class="col-lg-8">
+    <div class="ddd">
+    <div class="tab-content">
+    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <div class="mypage_content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>작성시간</th>
+                </tr>
+           </thead>
+           <tbody>
+              <% @posts.each do |a|%>
+              <tr onClick="location.href='/posts/<%=a.id%>'">
+                  <td> <%= a.title %> </td>
+                  <td> <%= (a.created_at  + 32400 ).strftime("%Y-%m-%d %a %H:%M:%S")%> </td>
               </tr>
-         </thead>
-         <tbody>
-            <% @posts.each do |a|%>
-            <tr onClick="location.href='/posts/<%=a.id%>'">
-                <td> <%= a.title %> </td>
-                <td> <%= (a.created_at  + 32400 ).strftime("%Y-%m-%d %a %H:%M:%S")%> </td>
-            </tr>
-            <%end%>
-        </tbody>
-      </table>
-  </div>
-  
-  <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+              <%end%>
+          </tbody>
+        </table>
+        </div><!--mypage_content-->
+    </div> <!-- tab-pane active -->
     
-      <table class="table table-hover">
-          <thead>
-              <tr>
-                <th>제목</th>
-                <th>글 작성자</th>
-                <th>매칭 상태</th>
+    <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="mypage_content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>글 작성자</th>
+                  <th>매칭 상태</th>
+                </tr>
+           </thead>
+           <tbody>
+              <% @applies.each do |a|%>
+              <tr onClick="location.href='/posts/<%=a.post.id%>'">
+                  <td> <%= a.post.title %> </td>
+                  <td> <%= a.post.user_id %> </td>
+                  <td> <%=a.matching%> </td>
               </tr>
-         </thead>
-         <tbody>
-            <% @applies.each do |a|%>
-            <tr onClick="location.href='/posts/<%=a.post.id%>'">
-                <td> <%= a.post.title %> </td>
-                <td> <%= a.post.user_id %> </td>
-                <td> <%=a.matching%> </td>
-            </tr>
-        <%end%>
-        </tbody>
-      </table>
-  </div>
-  
-  <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
-      
-      <table class="table table-hover">
-          <thead>
+          <%end%>
+          </tbody>
+        </table>
+      </div><!--mypage_content-->
+    </div> <!-- tab-pane -->
+    
+    <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+      <div class="mypage_content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>글 작성자</th>
+                </tr>
+           </thead>
+           <tbody>
+          <% @scraps.each do |a|%>
+          <tr onClick="location.href='/posts/<%=a.post.id%>'">
+              <td><%= a.post.title %></td>
+              <td><%= a.post.user_id %></td>
+          </tr>
+          <%end%>
+          </tbody>
+        </table>
+        </div><!--mypage_content-->
+    </div> <!-- tab-pane -->
+    
+    <div class="tab-pane" id="apps" role="tabpanel" aria-labelledby="apps-tab">
+      <div class="mypage_content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>신청서 작성자</th>
+                  <th>수락/거절하기</th>
+                </tr>
+           </thead>
+           <tbody>
+          <% @badunapp.each do |a|%>
+          <tr onClick="location.href='/apply/show/<%=a.id%>'">
+              <td><%= a.title %></td>
+              <td><%= a.user_id %></td>
+              <% if a.matching %>
+                <td> <a class="btn btn-info" role="button">수락 완료</a> </td>
+              <% else %>
+                <td> 
+                  <a href="/post/<%=a.post_id%>/apply_accept/<%=a.id%>" class="btn btn-info" role="button">수락</a> 
+                  <a href="/apply/destroy/<%=a.post_id%>" class="btn btn-info" role="button" method='post'>거절</a>
+                </td>
+              <%end%>
+          </tr>
+          <%end%>
+          </tbody>
+        </table>
+        </div><!--mypage_content-->
+    </div> <!-- tab-pane -->
+    
+      <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+      <div class="mypage_content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>매칭 파트너</th>
+                  <th>활동 종료</th>
+                </tr>
+           </thead>
+           <tbody>
+          <% @matchinguser.each do |a|%>
               <tr>
-                <th>제목</th>
-                <th>글 작성자</th>
+                  <Td><%= a.post.title %></Td>
+                  <Td><%=a.partner%></td>
+                  <td>
+                    <button class="btn panel-body" onclick="location.href='/1/<%=a.id%>/<%=a.partner%>/review/new' ">활동종료</button> 
+                  </td>
               </tr>
-         </thead>
-         <tbody>
-        <% @scraps.each do |a|%>
-        <tr onClick="location.href='/posts/<%=a.post.id%>'">
-            <td><%= a.post.title %></td>
-            <td><%= a.post.user_id %></td>
-        </tr>
-        <%end%>
-        </tbody>
-      </table>
-  </div>
-  
-  <div class="tab-pane" id="apps" role="tabpanel" aria-labelledby="apps-tab">
-      
-      <table class="table table-hover">
-          <thead>
+          <%end%>
+          <% @matchinguser2.each do |a|%>
               <tr>
-                <th>제목</th>
-                <th>신청서 작성자</th>
-                <th>수락하기</th>
-              </tr>
-         </thead>
-         <tbody>
-        <% @badunapp.each do |a|%>
-        <tr onClick="location.href='/apply/show/<%=a.id%>'">
-            <td><%= a.title %></td>
-            <td><%= a.user_id %></td>
-            <% if a.matching %>
-              <td> <a class="btn btn-info" role="button">수락 완료</a> </td>
-            <% else %>
-              <td> <a href="/post/<%=a.post_id%>/apply_accept/<%=a.id%>" class="btn btn-info" role="button">수락하기</a> </td>
-            <%end%>
-        </tr>
-        <%end%>
-        </tbody>
-      </table>
-  </div>
-  
-    <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-      
-      <table class="table table-hover">
-          <thead>
-              <tr>
-                <th>제목</th>
-                <th>나의 파트너</th>
-                <th></th>
-              </tr>
-         </thead>
-         <tbody>
-        <% @mapplies.each do |a|%>
-            <!--<tr onClick="location.href='/posts/<%=a.post.id%>'">--> <tr>
-                <Td><%= a.post.title %> </Td>
-                <Td>
-                  <% if  a.post.user_id == current_user.id%> 
-                    <%=a.user_id%></td> 
-                    <td><button onclick="location.href='/<%=a.user_id%>/review/new' ">활동종료</button> </td>
+                  <Td><%=a.title %></Td>
+                  <Td>
+                    <% if a.state == '0' %>
+                      활동이 종료됨
+                    <% else %>
+                      <%=a.state%>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if a.state != '0' %>
+                      <button class="btn panel-body" onclick="location.href='/2/<%=a.id%>/<%=User.find(a.state).id%>/review/new' ">활동종료</button> 
+                    <% end %>
+                  </td>
                     
-                  <% else %> 
-                    <%=a.partner%></td>
-                    <td><button onclick="location.href='/<%=a.partner%>/review/new' ">활동종료</button> </td>
-                  <% end %>
-            </tr>
-            
-        <%end%>
-        </tbody>
-      </table>
+              </tr>
+              
+          <%end%>
+          </tbody>
+        </table>
+        </div> <!--mypage_content-->
+      </div> <!-- tab-pane -->
+    </div>    <!-- tab-content -->
+  </div> <!-- col-mid-8 -->
+    </div> <!-- row -->
+  </div> <!-- mypage -->
+  </div>
+  
+  <div id="myModal" class="modal fade " role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered" >
+      <!-- Modal content-->
+      <div class="modal-mycontent">
+        <div class="modal-header">
+        <h3>나에게 등록된 후기</h3>
+          <button type="button" class="close"  name="close" data-dismiss="modal">&times;</button>
+        </div>
+      <div class="modal-body">
+        
+        <% current_user.reviews.each do |a| %>
+        <table width="95%" style="margin-bottom:40px" align="center">
+          <tr>
+            <td style="background-color:#FCFCFC;text-align:left;border-top: 1px solid #CCC;border-bottom: 1px solid #CCC; padding:7px 0px">
+              <%= a.writer%> 
+              <span style="float:right">
+                <% for i in 1 .. a.rate %>
+                 <i class="fas fa-star" style="color:#ffe44d"></i>
+                <% end %> <b>( <%=a.rate %> )</b></span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <%= a.content%>
+            </td>
+          </tr></table>
+          <br><br>
+    <% end %>
+        
+      </div>
+    </div>
+    </div>
   </div>
 </div>
-
-</div>
-
-
-<script>
-  $('#myTab a').on('click', function (e) {
-  e.preventDefault()
-  $(this).tab('show')
-})
-
-
-</script>
+  
+  
+  <script>
+    $('#myTab a').on('click', function (e) {
+    e.preventDefault()
+    $(this).tab('show')
+  })
+  
+  
+  </script>

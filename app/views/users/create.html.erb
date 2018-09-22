@@ -1,52 +1,22 @@
 <style>
-    h2 {
-        color: black;
-    }
-    
-    input[type=text], select {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 8px 0;
-        display: block;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-    
-    input[type=submit] {
-        width: 100%;
-        background-color: #6495ED;
-        color: white;
-        padding: 14px 20px;
-        margin: 8px 0;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    
-    input[type=submit]:hover {
-        background-color: #ab9e91;
-    }
-    
     div.container_confirm {
         border-radius: 5px;
         background-color: #f2f2f2;
-        padding: 100px;
-        width: 50%;
+        padding: 80px;
+        width: 40%;
         margin: 50px auto 100px auto
     }
-    
-    input[type=text]:focus {
-      outline: 1px solid #827ffe;
-    }
-    
-    select:focus{outline: 1px solid #827ffe}
-
-    </style>
-    <div class="container_confirm">
-    <h2>인증하기</h2><br>
-    <%=form_tag(users_authen_path, method: "post") do %>
+</style>
+<div id="about" class="paddsection">
+    <div class="container">
+        <div class="text-center">
+        <div class="container_confirm">
+        <h2>인증하기</h2><br>   
+        <%=form_tag(users_authen_path, method: "post") do %>
         <%=text_field_tag 'authen', nil, placeholder: '인증 번호' %>
-        <%= submit_tag '확인'%>
-    <%end%>
+        <%= button_to '확인', users_authen_path, :class => 'btn', method: :post%>
+        <%end%>
+        </div>
+        </div>
     </div>
+</div>

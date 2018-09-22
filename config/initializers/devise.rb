@@ -13,7 +13,6 @@ Devise.setup do |config|
   # 소셜 API KEY 변수 설정 
   config.omniauth :google_oauth2, ENV["Google_Key"], ENV["Google_Secret"]
   config.omniauth :facebook, ENV["Facebook_Key"], ENV["Facebook_Secret"]
-  config.omniauth :naver, ENV["Naver_Key"], ENV["Naver_Secret"]
   
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.

@@ -1,10 +1,9 @@
 <style>
-    .map_wrap {position:relative;width:100%;height:350px;}
+    .map_wrap {position:relative;width:100%;height:386px;}
     .title {font-weight:bold;display:block;}
     .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
     #centerAddr {display:block;margin-top:2px;font-weight: normal;}
     .bAddr {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-    .btn{background-color: rgba(0, 0, 0, 0);}
     td {padding:15px; text-align:center;}
     th {padding:15px; text-align:center;}
     tr {text-align:center; }
@@ -38,14 +37,24 @@
     <div class="form-group row">
       <div class="col-md-3" style="padding-left: 0px;"><%= form.select(:category, options_for_select(['게임','코딩','언어','뷰티','운동','음악']),{}, {:class=>"form-control"})%></div>
       <div class="col-md-9" style="padding-left: 0px;padding-right: 0px;"><%= form.text_field :title , class:"form-control", :placeholder => 'title', :style => 'display:inline'%></div>
-      <%= form.text_area :content , class:"form-control", size: "24x30" %>
+      <%= form.text_area :content , class:"form-control", size: "24x35" %>
+      <div id="dox" class="table-control">
+            <div class="field">
+                <%= form.file_field :image, accept:'image/png,image/gif,image/jpg,image/jpge'%>
+                <div style="float:right">
+                    <label>SNS 정보 공개 여부</label>
+                    <label><input type="radio" name="sns" value="0" <% if !@post.sns %> checked <% end %>/> <span class="label-text">비공개</span></span></label>  
+                    <label><input type="radio" name="sns" value="1" <% if @post.sns %> checked <% end %>/> <span class="label-text">공개</span></label>
+                </div>
+            </div>
+        </div>
     </div>
   </div>
   <div class="col-md-6">
     <div id="dox" class="table-control">
       <% days = ['일', '월', '화', '수', '목', '금', '토'] %>
       <% tt = ['오전', '오후', '저녁', '풀타임'] %>
-      <% for i in 0..5 %>
+      <% for i in 0..6 %>
       
         <% k = 0 %>
         <% @tmp = '' %>
@@ -55,12 +64,14 @@
         <%end%>
          <font <%if i == 0%> color="#DC143C" <% elsif i == 6 %> color="#4169E1" <%end%> ><%= days[i] %></font> &nbsp;
            <% for j in 0..3 %>
-             <input type="checkbox" name="date[<%= i %>][]" value="<%=tt[j]%>" <% if @tmp.include?"#{tt[j]}" %> checked <%end%>><%=tt[j]%>&nbsp;
+             <label><input type="checkbox" name="date[<%= i %>][]" value="<%=tt[j]%>" <% if @tmp.include?"#{tt[j]}" %> checked <%end%>><span class="label-text"><%=tt[j]%></span></label>
            <% end %>
            <br>
       <% end %>
     </div>
     
+
+
 <div class="map_wrap">
     <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
     <div class="hAddr">
@@ -76,40 +87,66 @@ var geocoder = new daum.maps.services.Geocoder();
 
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
-        center: new daum.maps.LatLng(<%= @post.lat %>, <%= @post.lon %>), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
+        center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨 
+    }; 
     
-// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-var map = new daum.maps.Map(mapContainer, mapOption); 
+var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-// 마커가 표시될 위치입니다 
-var markerPosition  = new daum.maps.LatLng(<%= @post.lat %>, <%= @post.lon %>); 
-
-// 마커를 생성합니다
-var marker = new daum.maps.Marker({
-    position: markerPosition
-});
-
-// 마커가 지도 위에 표시되도록 설정합니다
-marker.setMap(map);
-searchAddrFromCoords(map.getCenter(), displayCenterInfo);
-// 지도에 클릭 이벤트를 등록합니다
-// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
-daum.maps.event.addListener(map, 'click', function(mouseEvent) {        
-
-    // 클릭한 위도, 경도 정보를 가져옵니다 
-    var latlng = mouseEvent.latLng; 
+if (navigator.geolocation) {
     
-    // 마커 위치를 클릭한 위치로 옮깁니다
-    marker.setPosition(latlng);
-
-    document.getElementById("post_lat").value = latlng.getLat();
-    document.getElementById("post_lon").value = latlng.getLng();
- 
-    searchAddrFromCoords(latlng, displayCenterInfo);
-});
-
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+        
+        var lat = position.coords.latitude, // 위도
+            lon = position.coords.longitude; // 경도
+        
+        document.getElementById("post_lat").value = lat;
+        document.getElementById("post_lon").value = lon;
+        
+        var locPosition = new daum.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+        
+        // 마커와 인포윈도우를 표시합니다
+        displayMarker(locPosition);
+        searchAddrFromCoords(locPosition, displayCenterInfo);
+      });
+    
+} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+    
+    var locPosition = new daum.maps.LatLng(33.450701, 126.570667);    
+        // message = 'geolocation을 사용할수 없어요..'
+        
+    displayMarker(locPosition);
+    searchAddrFromCoords(locPosition, displayCenterInfo);
+}
+// 지도에 마커와 인포윈도우를 표시하는 함수입니다
+function displayMarker(locPosition) {
+    // 마커를 생성합니다
+    var marker = new daum.maps.Marker({  
+        map: map, 
+        position: locPosition
+    }); 
+    
+    // 지도 중심좌표를 접속위치로 변경합니다
+    map.setCenter(locPosition);  
+    
+    // 지도에 클릭 이벤트를 등록합니다
+    // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+    daum.maps.event.addListener(map, 'click', function(mouseEvent) {        
+    
+        // 클릭한 위도, 경도 정보를 가져옵니다 
+        var latlng = mouseEvent.latLng; 
+        
+        // 마커 위치를 클릭한 위치로 옮깁니다
+        marker.setPosition(latlng);
+       
+        document.getElementById("post_lat").value = latlng.getLat();
+        document.getElementById("post_lon").value = latlng.getLng();
+        
+        locPosition = new daum.maps.LatLng(latlng.getLat(), latlng.getLng());
+        searchAddrFromCoords(locPosition, displayCenterInfo);
+    });
+}   
 function searchAddrFromCoords(coords, callback) {
     // 좌표로 행정동 주소 정보를 요청합니다
     geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
@@ -119,28 +156,28 @@ var address;
 
 function displayCenterInfo(result, status) {
     if (status === daum.maps.services.Status.OK) {
-        //var infoDiv = document.getElementById('centerAddr');
-
         for(var i = 0; i < result.length; i++) {
             // 행정동의 region_type 값은 'H' 이므로
             if (result[i].region_type === 'H') {
                 address = result[i].address_name.split(" ");
-                document.getElementById("centerAddr").innerHTML = address[2];
+                document.getElementById("centerAddr").innerHTML = address[1] + "\t" +address[2];
                 break;
             }
         }
-        document.getElementById("post_address").value = address[2];
+        document.getElementById("add1").value = address[1];
+        document.getElementById("add2").value = address[2];
     }
-}
+} 
 </script>
  <p>
     <%= form.hidden_field :lat %>
     <%= form.hidden_field :lon %>
-    <%= form.hidden_field :address %>
+    <input type="hidden" id="add1" name="add1"/>
+    <input type="hidden" id="add2" name="add2"/>   
   </p>
 
   <p>
-    <button type="button" class="btn" onClick="aa(this.form)">Done</button>
+    <button type="button" class="btn" onClick="aa(this.form)" style="float:right">수정 완료</button>
   </p>
 <% end %>
 
@@ -157,13 +194,10 @@ function displayCenterInfo(result, status) {
                 return form.submit();}}
     }
     if(!isChk){
-      alert("시간 항목 오류");
+      alert("시간을 적어도 하나 이상 선택해주세요");
        return false;}
-       
-    
-      
-    
+
 }
 </script>
- </div>
-  </div>
+</div>
+</div>

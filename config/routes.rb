@@ -2,12 +2,11 @@ Rails.application.routes.draw do
   root 'posts#index'
   get 'home/index'
   get 'register/info' # 로그인한 후 화면
-  get 'mypage/mypage' # 마이페이지
+  get '/mypage' => 'mypage#mypage' # 마이페이지
+  post '/img_save' => 'mypage#img_save'
   get 'about/about'
-  
-  # get 'user/name'
-  # get 'user/email'
-  # get 'user/login'
+  post 'mypage/update_info'
+  get 'mypage/edit_info' # 정보 수정
 
   # 소셜 로그인 시 callbacks 지정
   devise_for :users, controllers: { omniauth_callbacks: 'user/omniauth_callbacks' }
@@ -19,7 +18,6 @@ Rails.application.routes.draw do
     end
     resources :messages, only: [:create]
   end
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   
   #실시간채팅 액션케이블
   mount ActionCable.server => '/cable'
@@ -27,10 +25,8 @@ Rails.application.routes.draw do
   #신청서
   post 'apply/new/:post_id' => 'apply#new'
   post 'apply/create', as: 'apply_cre'
-  post 'apply/destroy/:post_id' => 'apply#destroy'
+  get 'apply/destroy/:post_id/:a_id' => 'apply#destroy'
   get 'apply/show/:apply_id' => 'apply#show'
-  post 'apply/edit/:apply_id' => 'apply#edit'
-  patch 'apply/update/:apply_id' => 'apply#update', as: 'apply_update'
   
   #신청서 수락
   get '/post/:post_id/apply_accept/:apply_id' => 'apply#apply_accept'
@@ -57,8 +53,8 @@ Rails.application.routes.draw do
   post 'users/authen' => 'users#authen'
   
   #후기작성
-  get ':u_id/review/new' => 'review#new'
-  post ':u_id/review/create' => 'review#create'
-  get  ':u_id/review/index' => 'review#index'
+  get ':db/:a_id/:u_id/review/new' => 'review#new'
+  post ':db/:a_id/:u_id/review/create' => 'review#create'
+  
 
 end

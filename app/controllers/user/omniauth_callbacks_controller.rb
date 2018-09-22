@@ -5,8 +5,7 @@ class User::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def self.provides_callback_for(provider)
     class_eval %Q{
       def #{provider}
-        @user = User.find_for_oauth(request.env["omniauth.auth"], current_user)
-        
+        @user = User.from_omniauth(request.env["omniauth.auth"])
         if @user.persisted?
           sign_in_and_redirect @user, event: authenticate_user!
         else
@@ -17,7 +16,7 @@ class User::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     }
   end
   
-  [:google_oauth2, :facebook, :naver].each do |provider|
+  [:google_oauth2, :facebook].each do |provider|
     provides_callback_for provider
   end
   

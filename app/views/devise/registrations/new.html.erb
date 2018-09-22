@@ -1,7 +1,15 @@
+<style>
+  body{
+    background-color:#fafafb;
+    font-size:11pt;
+  }
+</style>
+<div class="cenbox">
+
 <%= form_for(resource, :html => {:class => "login100-form validate-form flex-sb flex-w"}, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
   <span class="login100-form-title p-b-51">
-		회원가입
+		<img src="/assets/logo.png" width="100px" height="auto">
 	</span>
 	
   <div class="wrap-input100 validate-input m-b-16">
@@ -25,8 +33,18 @@
   </div>
   
   <div class="wrap-input100 validate-input m-b-16"><br>
-    <center><%= f.radio_button :sex, "F", checked: true %> 여성  &nbsp; <%= f.radio_button :sex, "M" %> 남성</center>
+    <center>
+      <label><%= f.radio_button :sex, "F", checked: true %> <span class="label-text">여자</span></label>  
+      <label><%= f.radio_button :sex, "M" %> <span class="label-text">남자</span></label>
+      </center>
     <br>
+    <span class="focus-input100"></span>
+  </div>
+  
+  <div class="wrap-input100 validate-input m-b-16">
+    SNS 계정이 없다면 비워주세요<br>
+    <%= f.text_field :instagram, :class => 'input100', :placeholder => 'Instagram 계정' %><br>
+    <%= f.text_field :twitter, :class => 'input100', :placeholder => 'Twitter 계정' %>
     <span class="focus-input100"></span>
   </div>
 
@@ -36,3 +54,5 @@
 <% end %>
 
 <%= render "devise/shared/links" %>
+
+</div>

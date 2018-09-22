@@ -19,7 +19,7 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-naver'
 
 # # 이미지 업로드
-gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
+gem 'carrierwave'
 gem 'fog-aws' # file을 s3에 upload 가능하게 함
 # gem 'fog', '~> 1.38'
 gem 'mini_magick'

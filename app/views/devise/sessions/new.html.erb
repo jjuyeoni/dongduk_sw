@@ -1,11 +1,20 @@
+<style>
+  body{
+    background-color:#fafafb;
+    font-size:11pt;
+  }
+</style>
+<div class="cenbox">
 <%= form_for(resource, :html => {:class => "login100-form validate-form flex-sb flex-w"}, as: resource_name, url: session_path(resource_name)) do |f| %>
  <span class="login100-form-title p-b-51">
-		로그인
+		<img src="/assets/logo.png" width="100px" height="auto">
 	</span>
   <div class="wrap-input100 validate-input m-b-16" data-validate = "Username is required">
     <%= f.email_field :email, :class => 'input100', autofocus: true, autocomplete: "email", placeholder: "아이디를 입력해주세요"%>
     <span class="focus-input100"></span>
   </div>
+  
+  
 
   <div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
     <%= f.password_field :password, :class => 'input100', autocomplete: "off", placeholder: "비밀번호를 입력해주세요"%>
@@ -18,3 +27,4 @@
 <% end %>
 
 <%= render "devise/shared/links" %>
+</div>

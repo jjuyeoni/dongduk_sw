@@ -1,14 +1,21 @@
 <%- if controller_name != 'sessions' %>
-  <%= link_to "로그인", new_session_path(resource_name) %><br />
+  <div class="container-login100-form-btn m-t-17">
+    <%= button_to  new_session_path(resource_name),:class => 'login100-form-btn' do%>
+      이미 회원이라면 로그인
+    <% end %>
+   </div>
 <% end -%>
 
 <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-  <%= link_to "회원가입", new_registration_path(resource_name) %><br />
+<div class="container-login100-form-btn m-t-17">
+  
+  <%= button_to new_registration_path(resource_name) , :class => 'login100-form-btn', :method => 'get' do%>
+      회원가입
+    <% end %>
+  </div>
 <% end -%>
 
-<%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-  <%= link_to "비밀번호를 잊어버리셨나요?", new_password_path(resource_name) %><br /><br>
-<% end -%>
+
 
 <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
   <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
@@ -20,50 +27,46 @@
 
 <div text-align="center">
 <%- if devise_mapping.omniauthable? %>
-  <%= button_to "구글로 로그인", omniauth_authorize_path(resource_name, :google_oauth2),{:class => 'google-login'}%>
+  <%= button_to  omniauth_authorize_path(resource_name, :google_oauth2),:class => 'snsbtn' do%>
+    <i class="fab fa-google" style="font-size:30px"><sns> Google</sns></i> 
+  <% end %>
 <% end -%>
 
 <%- if devise_mapping.omniauthable? %>
-  <%= button_to "페이스북으로 로그인", omniauth_authorize_path(resource_name, :facebook), {:class => 'facebook-login'} %>
-<% end -%>
-
-<%- if devise_mapping.omniauthable? %>
-  <%= button_to "네이버로 로그인", omniauth_authorize_path(resource_name, :naver), {:class => 'naver-login'}%>
+  <%= button_to  omniauth_authorize_path(resource_name, :facebook), {:class => 'snsbtn'} do%>
+    <i class="fab fa-facebook" style="font-size:30px"><sns> FaceBook</sns></i> 
+  <%end%>
 <% end -%>
 </div>
 
 <style>
-  .google-login {
-  text-indent:-10000px;
-  width: 40px;
-  height: 40px;
-  background-image: url('/assets/google-login.png');
-  background-size: cover;
-  background-color: rgb(255, 255, 255, 0);
-  margin:20px 20px 20px 25%;
- }
- 
- .facebook-login {
-  text-indent:-10000px;
-  width: 40px;
-  height: 40px;
-  background-image: url('/assets/facebook-login.png');
-  background-size: cover;
-  margin:20px;
- }
- 
- .naver-login {
-  text-indent:-10000px;
-  width: 40px;
-  height: 40px;
-  background-image: url('/assets/naver-login.png');
-  background-size: cover;
-  margin:20px;
- }
+sns {
+  vertical-align:middle;
+  font-size:12pt;
+  font-family: 'Nanum Gothic Coding';
+}
+
+.snsbtn {
+    cursor: pointer;
+    opacity: 0.9;
+    background: rgba(0, 0, 0, 0);
+    border:none;
+    color: #B0C4DE;
+    font-size: 12pt;
+    font-weight: bold;
+    line-height: 40px;
+    text-transform: uppercase;
+    font-family: 'Nanum Gothic Coding';
+    
+}
+
+.snsbtn:hover, .snsbtn:focus {
+   color:rgb(0, 0, 0, 0.3);
+}
+
+  
  .button_to {
    display: inline;
-   left:50%;
-   right:50%;
  }
 </style>
   <!--<- resource_class.omniauth_providers.each do |provider| %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_03_132405) do
+ActiveRecord::Schema.define(version: 2018_09_07_123345) do
 
   create_table "applies", force: :cascade do |t|
     t.integer "partner"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 2018_09_03_132405) do
   end
 
   create_table "posts", force: :cascade do |t|
+    t.string "state"
     t.string "title"
     t.text "content"
     t.string "category"
@@ -81,7 +82,8 @@ ActiveRecord::Schema.define(version: 2018_09_03_132405) do
     t.string "lat"
     t.string "lon"
     t.integer "user_id"
-    t.string "image_url", default: ""
+    t.string "image"
+    t.boolean "sns"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
@@ -124,11 +126,13 @@ ActiveRecord::Schema.define(version: 2018_09_03_132405) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "sex"
+    t.string "sex", default: "성별"
     t.integer "rate", default: -1
     t.string "school"
     t.integer "sid"
     t.string "name"
+    t.string "instagram"
+    t.string "twitter"
     t.string "profile_img"
     t.boolean "confirmed_portal", default: false, null: false
     t.string "email", default: "", null: false
@@ -143,6 +147,12 @@ ActiveRecord::Schema.define(version: 2018_09_03_132405) do
     t.string "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "provider"
+    t.string "uid"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "gender"
+    t.string "sns"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

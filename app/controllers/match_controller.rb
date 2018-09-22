@@ -1,11 +1,14 @@
 class MatchController < ApplicationController
+  
   def index
+     @address = ['전체', '강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구', '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구']
     @time = Time.now.year
     @category = ['게임','코딩','언어','뷰티','운동','음악']
+    
   end
   
   def search
-    
+     @address = ['강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구', '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구']
     #매칭된 글 DB 초기화
     Matpost.where("user_id = ?", current_user.id).each do |a|
       a.destroy
@@ -31,9 +34,21 @@ class MatchController < ApplicationController
     end 
     cookies[:category] = @category
     
+    #행정구 저장
+    @add = []
+    if params[:address][:address].include?('전체')
+      cookies[:address] = '전체'
+      @add = @address
+    else
+      params[:address][:address].each do |a|
+        @add << a
+      end 
+      cookies[:address] = @add
+    end
+    
     @users.each do |x|
       x.posts.each do |y| #각 유저가 쓴 글중에서
-       if @category.include?(y.category)
+      if @category.include?(y.category) && @add.include?(y.address[0])
          Matpost.create(post_id: y.id, user_id: current_user.id)
        end
       end
@@ -48,10 +63,17 @@ class MatchController < ApplicationController
   def result
     @category = cookies[:category].split("&") 
     @result = Matpost.where(user_id: current_user.id)
-    @sex = cookies[:sex]
+    if cookies[:sex] == 'F'
+      @sex = '여자'
+    elsif cookies[:sex] == 'M'
+      @sex = '남자'
+    else
+      @sex = cookies[:sex]
+    end
     @start_sid = cookies[:st]
     @end_sid = cookies[:en]
     @school = cookies[:school]
+    @address = cookies[:address].split("&") 
   end
   
   

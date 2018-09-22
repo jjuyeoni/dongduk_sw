@@ -29,7 +29,8 @@ class UsersController < ApplicationController
       
       cookies.delete :random_number
     end
-    redirect_to root_path
+    redirect_to '/mypage'
   end
+
   
 end

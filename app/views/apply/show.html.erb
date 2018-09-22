@@ -1,52 +1,33 @@
 <style>
-    .btn{background-color: rgba(0, 0, 0, 0); margin-bottom:10px; align:center;}
     td {padding:15px; text-align:center;}
-    tr {text-align:center; }
-    #hi{width:150px; height:auto; margin-right:10px;}
 </style>
 <div class="container">
-<h1>신청서 확인</h1>
-
-<table width="100%" align="center">
-    <tr>
-        <td colspan="2" style="background-color:#DCDCDC"> <%= @apply.title %></td>
-    </tr>
-    <tr>
-        <td colspan="2"> <%= @apply.content %></td>
-    </tr>
-    <tr>
-        <td colspan="2"> <%= @apply.user_id%></td>
-    </tr>
-    <tr>
-        <td colspan="2"> <%= (@apply.created_at + 32400 ).strftime "%Y-%m-%d %H:%M:%S"%></td>
-    </tr>
-    
-    <tr>
-        <% if @apply.matching %>
-            <td> 매칭 완료</td>
-        <% else %>
-        <% if current_user.id == @apply.user_id %>
-        <td>
-             <form action="/apply/edit/<%=@apply.id%>" method='post'>
-                <button class="btn" id="btn" type="submit"><img class="btn-img" id="hi" src="/assets/edit.png" ></button>
-            </form>
-        </td>
-        <td>
-            <form action="/apply/destroy/<%=@apply.post_id%>" method='post'>
-                <button class="btn" id="btn" type="submit"><img class="btn-img" id="hi" src="/assets/dele.png" ></button>
-            </form>
-        </td>
-        <% else %>
-         <td> 
-             <form action="/apply/destroy/<%=@apply.post_id%>" method='post'>
-               <input type="submit" value="거부"/>
-            </form>
-         </td>
-         <td><a href="/post/<%=@apply.post_id%>/apply_accept/<%=@apply.id%>">수락하기</a> </td>
-        <%end%>
-        <%end%>
-        
-    </tr>
-    
-</table>
+    <br><br>
+<table width="100%" style="color:black">
+                <tr>
+                    <td style="background-color:#FCFCFC;text-align:left;border-top: 1px solid #CCC;border-bottom: 1px solid #CCC;">
+                        <b><%= @apply.title %></b>
+                        <div style="float:right">
+                            <%= (@apply.created_at + 32400 ).strftime "%Y-%m-%d %H:%M"%>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;border-bottom: 1px solid #EEE;">
+                            <% if @apply.matching %>
+                                <td> 매칭 완료</td>
+                            <% else %>
+                                <% if current_user.id == @apply.user_id %>
+                                    <a href="/apply/edit/<%=@apply.id%>"> <i class="fas fa-eraser"></i> </a> 
+                                    <a href="/apply/destroy/<%=@apply.post_id%>"> <i class="far fa-trash-alt"></i></a> 
+                                <%end%>
+                            <%end%>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="150px">
+                        <%= @apply.content %>
+                    </td>
+                </tr>
+            </table>
 </div>

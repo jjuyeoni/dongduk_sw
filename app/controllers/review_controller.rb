@@ -1,6 +1,8 @@
 class ReviewController < ApplicationController
     def new
         @user_id = params[:u_id]
+        @apply_id = params[:a_id]
+        @db = params[:db]
     end
     
     def create
@@ -16,8 +18,18 @@ class ReviewController < ApplicationController
         user.rate = totalrate / user.reviews.count
         user.save
         
+        #1이면 신청서 2면 글
+        if (params[:db] == 1)
+            @app = Apply.find(params[:a_id])
+            @app.destroy
+        else
+            @post = Post.find(params[:a_id])
+            @post.state = 0
+            @post.save
+        end
         
-        redirect_to '/mypage/mypage'
+        redirect_to "/mypage"
+        
     end
     
     def index

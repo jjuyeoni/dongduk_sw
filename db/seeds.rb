@@ -4,8 +4,12 @@ password = 'pass123'
     email: "user-#{i}@example.com",
     name: "유저#{i}",
     sex: "F",
+    sid: "201#{i * 2}",
+    school: "경희대학교",
     password: password,
     password_confirmation: password,
+    confirmed_portal: true,
+    
     )
 end
   School.create(
@@ -24,6 +28,8 @@ end
       schoolemail: '@cau.ac.kr', schoolname: '중앙대학교')
     School.create(
       schoolemail: '@khu.ac.kr', schoolname: '경희대학교')
+    School.create(
+      schoolemail: '@kookmin.ac.kr', schoolname: '국민대학교')
     School.create(
       schoolemail: '@ewha.ac.kr', schoolname: '이화여자대학교')
     School.create(

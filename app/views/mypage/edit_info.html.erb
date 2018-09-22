@@ -1,0 +1,41 @@
+<style>
+    .img {width:100px; height:100px;}
+    .basis_img {width:100px; height:100px;}
+</style>
+
+<div id="about" class="paddsection">
+    <div class="container">
+    <div class="text-center"> 
+    <h2>정보 수정</h2><br><br>
+    <p>수정할 항목만 입력해주세요</p>
+    <form action="/mypage/update_info" method="post">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <label>이름: <input type="text" name="name"></label><br>
+  <label><input type="radio" name="sex" value="남" <% if current_user.sex == "남" %> checked="checked"<%end%>><span class="label-text">Male</span></label>
+  <label><input type="radio" name="sex" value="여" <% if current_user.sex == "여" %> checked="checked"<%end%>><span class="label-text">Female</span></label><br>
+  
+  <div class="image_form">
+  <% if current_user.profile_img.url.nil? %>
+        <img src="/assets/user.png" class="basis_img" alt="profile">
+        <p>프로필이 없습니다. 프로필을 등록해주세요</p> &nbsp;
+        <%= form_tag("/img_save", method: "post", multipart: true) do %>
+          <%= file_field_tag :profile_img, accept:'image/png,image/gif,image/jpg,image/jpge'%>
+          <%= submit_tag '등록' %>
+        <% end %>
+        <% else %>
+        <img src='<%= current_user.profile_img %>' class='img'> <br><br>
+        <%= form_tag("/img_save", method: "post", multipart: true) do %>
+          <%= file_field_tag :profile_img, accept:'image/png,image/gif,image/jpg,image/jpge'%><br>
+          <%= submit_tag '등록' %>
+        <% end%>
+         <% end %><br><br>
+  </div>
+  <input type="submit" value="수정하기"><br><br>
+</form>
+
+    <a href="/users/confirm"><h5>학교수정 및 인증</h5></a>
+    <br>
+</div>
+</div>
+</div>
+

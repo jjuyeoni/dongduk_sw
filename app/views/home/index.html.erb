@@ -1,15 +1,24 @@
-<h1>실시간 채팅</h1>
-<br><br>
+<div id="about" class="paddsection">
+    <div class="container">
 <div class="row">
   
-  <div class="col-md-3">
+  <div class="col-lg-9">
+    <ul id="conversations-list">
+      <% @conversations.each do |conversation| %>
+        <%= render 'conversations/conversation', conversation: conversation, user: current_user %>
+      <% end %>
+    </ul>
+  </div>
+  
+  <div class="col-lg-4" style="position:fixed;left:70%;">
     <div class="panel panel-primary">
       <div class="panel-heading">
         
       </div>
       <div class="panel-body">
         
-      <a style="color:#6495ED;font-weight:bold;"><i class="fas fa-comments" style="color:#6495ED"></i> 신청받은 ( <%= @badunapp.count %> )</a>
+      <div class="chatuserlist"><i class="fas fa-comments" style="color:white"></i> 신청받은 ( <%= @badunapp.count %> )</a></div>
+      
         <ul>
           <% @badunapp.each do |a| %>
             <% @user = User.find(a.user_id) %>
@@ -17,7 +26,8 @@
           <% end %>
         </ul>
         
-      <a style="color:#6495ED;font-weight:bold"><i class="fas fa-comments" style="color:#6495ED"></i> 신청한 ( <%= @applies.count %> )</a>
+      <div class="chatuserlist"><a><i class="fas fa-comments" style="color:white"></i> 신청한 ( <%= @applies.count %> )</a></div>
+      <br>
         <ul>
           <% @applies.each do |a| %>
             <% @user = User.find(a.partner) %>
@@ -29,15 +39,10 @@
  
       </div>
     </div>
-  
-  <div class="col-md-9">
-    <ul id="conversations-list">
-      <% @conversations.each do |conversation| %>
-        <%= render 'conversations/conversation', conversation: conversation, user: current_user %>
-      <% end %>
-    </ul>
-  </div>
-
+<br><br><br><br>
 </div>
 
 
+</div>
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br>
