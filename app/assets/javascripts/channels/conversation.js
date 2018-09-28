@@ -1,4 +1,3 @@
-//보람 - 실시간 채팅
 App.conversation = App.cable.subscriptions.create("ConversationChannel", {
   connected: function() {},
   disconnected: function() {},
@@ -36,6 +35,7 @@ App.conversation = App.cable.subscriptions.create("ConversationChannel", {
     });
   }
 });
+
 $(document).on('submit', '.new_message', function(e) {
   e.preventDefault();
   var values = $(this).serializeArray();

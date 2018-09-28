@@ -35,7 +35,7 @@
 <li>
   <div class="panel panel-default" data-conversation-id="<%= conversation.id %>">
     <div class="panel-heading">
-      <%= link_to conversation.opposed_user(user).email, '', class: 'toggle-window' %>
+      <%= link_to conversation.opposed_user(user).name, '', class: 'toggle-window' %>
       <%= link_to close_conversation_path(conversation), remote: true, method: :post  do%>
         <i class="fas fa-times-circle" style="color:lightgray"></i>
       <% end %>
@@ -48,6 +48,7 @@
           <%= render 'conversations/conversation_content', messages: conversation.messages, user: user %>
         </ul>
       </div>
+      
       <div class="sendchat">
       <form class="new_message">
         <input name="conversation_id" type="hidden" value="<%= conversation.id %>">
@@ -56,6 +57,7 @@
         <input type="submit" class="send" value="전송">
       </form>
       </div>
+      
     </div>
   </div>
 </li>

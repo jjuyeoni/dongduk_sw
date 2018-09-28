@@ -33,7 +33,7 @@
   
     <div class="form-group">
         <div class="row">
-            <div class="col-md-3" style="padding-left: 0px;"><%= form.select(:category, options_for_select(['게임','코딩','언어','뷰티','운동','음악']),{}, {:class=>"form-control"})%></div>
+            <div class="col-md-3" style="padding-left: 0px;"><%= form.select(:category, options_for_select(['게임','코딩','언어','뷰티','운동','음악', '요리', '미술', '컴퓨터활용']),{}, {:class=>"form-control"})%></div>
             <div class="col-md-9" style="padding-left: 0px;padding-right: 0px;"><%= form.text_field :title , class:"form-control", :placeholder => 'title', :style => 'display:inline'%></div>
         </div>
         <div class="row">

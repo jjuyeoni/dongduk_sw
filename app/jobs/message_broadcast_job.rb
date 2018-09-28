@@ -1,4 +1,3 @@
-#보람
 class MessageBroadcastJob < ApplicationJob
   queue_as :default
 

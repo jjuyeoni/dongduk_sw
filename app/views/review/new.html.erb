@@ -1,11 +1,13 @@
+<div id="about" class="paddsection">
 <div class="container">
-    <h1> <%=User.find(@user_id).name%>님에게 후기를 작성해주세요!</h1>
+    
+    <h3> <%=User.find(@user_id).name%>님에게 후기를 작성해주세요!</h3>
     <br>
     <div style="border:1px gray solid; padding:30px; margin-bottom:40px">
     <%= form_tag("/#{@db}/#{@apply_id}/#{@user_id}/review/create", method: "post") do %>
     <div data-role="rangeslider" data-mini="true">
         평점 : <input name="rate" id="rate" class="slide" type="range" min="0" max="5" value="0" data-highlight="true" onchange="document.getElementById('maxValue').innerHTML=this.value;">
-        <span id="maxValue">0</span>
+        <b><span id="maxValue">0</span></b>
     </div>
     <br>
     <div class="form-group row" style="margin:0px">
@@ -15,4 +17,5 @@
     <% end %>
     <br><br>
     </div>
+</div>
 </div>

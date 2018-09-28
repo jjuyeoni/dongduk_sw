@@ -83,11 +83,8 @@
     <span class="focus-input100"></span>
   </div>
   
-  
-  
-    <%= f.submit "수정", :class => 'btn', :style => 'float:right'%>
-<% end %>
-
+  <% end %>
+<%= button_to "수정", mypage_path, :method => 'get', :class => 'btn', :style => 'float:right'%>
 <%= button_to "탈퇴", registration_path(resource_name), :class => 'btn', data: { confirm: "정말 탈퇴하시겠습니까?" }, method: :delete, :style => 'float:left'%><br><br><br><br>
 
 <div class="text-center">

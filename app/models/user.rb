@@ -3,7 +3,7 @@ class User < ApplicationRecord
   acts_as_reader
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:google_oauth2, :facebook, :naver]
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:google_oauth2, :facebook]
   
   # email이 없어도 가입이 되도록 설정
   def email_required?

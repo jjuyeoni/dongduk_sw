@@ -114,8 +114,14 @@
               <% @applies.each do |a|%>
               <tr onClick="location.href='/posts/<%=a.post.id%>'">
                   <td> <%= a.post.title %> </td>
-                  <td> <%= a.post.user_id %> </td>
-                  <td> <%=a.matching%> </td>
+                  <td> <%= a.post.user.name %> </td>
+                  <td> <% if a.matching%> 
+                          <font color="#6495ED">매칭 완료</font>
+                       <% else %>
+                         수락 대기중
+                      <% end %>
+                  
+                  </td>
               </tr>
           <%end%>
           </tbody>
@@ -136,7 +142,7 @@
           <% @scraps.each do |a|%>
           <tr onClick="location.href='/posts/<%=a.post.id%>'">
               <td><%= a.post.title %></td>
-              <td><%= a.post.user_id %></td>
+              <td><%= a.post.user.name %></td>
           </tr>
           <%end%>
           </tbody>
@@ -158,7 +164,7 @@
           <% @badunapp.each do |a|%>
           <tr onClick="location.href='/apply/show/<%=a.id%>'">
               <td><%= a.title %></td>
-              <td><%= a.user_id %></td>
+              <td><%= User.find(a.user_id).name %></td>
               <% if a.matching %>
                 <td> <a class="btn btn-info" role="button">수락 완료</a> </td>
               <% else %>
@@ -188,7 +194,7 @@
           <% @matchinguser.each do |a|%>
               <tr>
                   <Td><%= a.post.title %></Td>
-                  <Td><%=a.partner%></td>
+                  <Td><%=User.find(a.partner).name%></td>
                   <td>
                     <button class="btn panel-body" onclick="location.href='/1/<%=a.id%>/<%=a.partner%>/review/new' ">활동종료</button> 
                   </td>
@@ -201,7 +207,7 @@
                     <% if a.state == '0' %>
                       활동이 종료됨
                     <% else %>
-                      <%=a.state%>
+                      <%=User.find(a.state).name%>
                     <% end %>
                   </td>
                   <td>

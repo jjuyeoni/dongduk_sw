@@ -5,7 +5,7 @@
 
 .filterDiv {
     float: left;
-    display: none; /* Hidden by default */
+    display: none; 
 }
 
 .show {
@@ -23,13 +23,13 @@
   
 }
 
-/* Add a light grey background on mouse-over */
+
 .category:hover {
   background-color: #ddd;
   color:white;
 }
 
-/* Add a dark background to the active button */
+
 .category.active {
   border: none;
   outline: none;
@@ -177,14 +177,13 @@ function filterSelection(c) {
   var x, i;
   x = document.getElementsByClassName("filterDiv");
   if (c == "all") c = "";
-  // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
   for (i = 0; i < x.length; i++) {
     RemoveClass(x[i], "show");
     if (x[i].className.indexOf(c) > -1) AddClass(x[i], "show");
   }
 }
 
-// Show filtered elements
+
 function AddClass(element, name) {
   var i, arr1, arr2;
   arr1 = element.className.split(" ");
@@ -196,7 +195,7 @@ function AddClass(element, name) {
   }
 }
 
-// Hide elements that are not selected
+
 function RemoveClass(element, name) {
   var i, arr1, arr2;
   arr1 = element.className.split(" ");
@@ -209,7 +208,7 @@ function RemoveClass(element, name) {
   element.className = arr1.join(" ");
 }
 
-// Add active class to the current control button (highlight it)
+
 var categories = document.getElementById("categories");
 var categorys = categories.getElementsByClassName("category");
 for (var i = 0; i < categorys.length; i++) {

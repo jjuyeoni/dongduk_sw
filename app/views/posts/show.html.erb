@@ -11,15 +11,13 @@
     .hi{width:150px; height:auto; margin-right:10px;vertical-align:middle;display:inline}
     #fr{float:right;padding:0px;}
     table{font-size:10pt;}
-      
-    
-
-.panel-body {
-  height: 100%; 
-  width: 100%; 
-  object-fit: contain
-}
-.basis_img {width:150px; height:150px;}
+    .panel-body {
+      height: 100%; 
+      width: 100%; 
+      object-fit: contain
+    }
+    .basis_img {width:150px; height:150px;}
+    .linech{white-space: pre-line};
 
 </style>
 
@@ -35,54 +33,7 @@
                     <% end %><br>
                 </div>
                 <hr>
-                <div class="row" style="padding: 20px;">
-                    <div class="col-lg-5">
-                        <% if User.find(@post.user_id).profile_img.url.nil? %>
-                            <img src="/assets/user.png" class="rounded-circle basis_img" alt="profile">
-                        <% else %>
-                            <img src='<%= User.find(@post.user_id).profile_img %>' class="rounded-circle basis_img">
-                        <% end %>
-                    </div>
-                    <div class="col-lg-7">
-                        <p><cap>이 름 |</cap> <%= User.find(@post.user_id).name %></p>
-                        <p><cap>학 교 |</cap> <%= User.find(@post.user_id).school %></p>
-                        <div class="info" style="float:right;">
-                            <% if @post.sns %>
-                                <% if User.find(@post.user_id).twitter != nil %>
-                                    <a href="http://www.twitter.com/<%= User.find(@post.user_id).twitter%>" target="_blank">
-                                        <i class="fab fa-2x fa-twitter" style="color:#00BFFF"></i></a>&nbsp;
-                                <% else %>
-                                    <i class="fab fa-2x fa-twitter" style="color:gray"></i>&nbsp;
-                                <% end %>
-                                
-                                <% if User.find(@post.user_id).instagram != nil %>
-                                    <a href="http://www.instagram.com/<%= User.find(@post.user_id).instagram%>" target="_blank">
-                                    <i class="fab fa-2x fa-instagram" style="color:#FF69B4"></i></a>
-                                <% else %>
-                                    <i class="fab fa-2x fa-instagram" style="color:gray"></i>
-                                <% end %>
-                                
-                            <% else %>
-                                <i class="fab fa-2x fa-twitter" style="color:gray"></i> &nbsp;
-                                <i class="fab fa-2x fa-instagram" style="color:gray"></i>
-                            <% end %>
-                            
-						<!--<ul>-->
-						<!--	<li class="ar">-->
-						<!--		건대							</li>							-->
-						<!--	<li class="hu"><font color="#ff005a">1</font>시간/회</li>-->
-						<!--	<li class="gr">-->
-						<!--										1:1 수업-->
-						<!--		</li>-->
-						<!--	<li class="ohu">-->
-						<!--										<font color="#ff005a">￦30,000</font>/시간-->
-						<!--	</li>-->
-						<!--</ul>-->
-					</div>
-                    </div>
-                </div>
-                <hr>
-                <div>
+                <div class="linech">
                     <h4><%= @post.title%></h4><br>
                     <%= @post.content %>
                 </div>
@@ -91,8 +42,8 @@
                         <h4>리뷰 &nbsp;
                         <%if User.find(@post.user_id).rate != -1%>
                             <% for i in 1..@user.rate %>
-                                    <i class="fas fa-star" style="color:#ffe44d"></i>
-                                <% end %> <b>( <%=@user.rate %> )</b> 
+                                <i class="fas fa-star" style="color:#ffe44d"></i>
+                            <% end %> <b>( <%=@user.rate %> )</b> 
                         <%end%>
                         </h4> <br>
                         <% if @user.rate == -1 %>
@@ -104,7 +55,7 @@
                                     <table width="95%" style="margin-bottom:40px" align="center">
                                         <tr>
                                             <td style="padding:10px;background-color:#FCFCFC;text-align:left;border-top: 1px solid #CCC;border-bottom: 1px solid #CCC;"> 
-                                                <%= a.writer%> <span style="float:right">
+                                                <%= User.find(a.writer).name %> <span style="float:right">
                                                     <% for i in 1 .. a.rate %>
                                                         <i class="fas fa-star" style="color:#ffe44d"></i>
                                                     <% end %> <b>( <%=a.rate %> )</b></span>
@@ -133,6 +84,40 @@
             
             </div>
             <div class="col-lg-4" style="position: fixed;left: 62%; width:50vh">
+                <div class="row" style="padding: 20px;">
+                    <div class="col-lg-5">
+                        <% if User.find(@post.user_id).profile_img.url.nil? %>
+                            <img src="/assets/user.png" class="rounded-circle basis_img" alt="profile">
+                        <% else %>
+                            <img src='<%= User.find(@post.user_id).profile_img %>' class="rounded-circle basis_img">
+                        <% end %>
+                    </div>
+                    <div class="col-lg-7">
+                        <p><cap>이 름 |</cap> <%= User.find(@post.user_id).name %></p>
+                        <p><cap>학 교 |</cap> <%= User.find(@post.user_id).school %></p>
+                        <div class="info" style="float:right;">
+                            <% if @post.sns %>
+                                <% if User.find(@post.user_id).twitter != "" %>
+                                    <a href="http://www.twitter.com/<%= User.find(@post.user_id).twitter%>" target="_blank">
+                                        <i class="fab fa-2x fa-twitter" style="color:#00BFFF"></i></a>&nbsp;
+                                <% else %>
+                                    <i class="fab fa-2x fa-twitter" style="color:gray"></i>&nbsp;
+                                <% end %>
+                                
+                                <% if User.find(@post.user_id).instagram != "" %>
+                                    <a href="http://www.instagram.com/<%= User.find(@post.user_id).instagram%>" target="_blank">
+                                    <i class="fab fa-2x fa-instagram" style="color:#FF69B4"></i></a>
+                                <% else %>
+                                    <i class="fab fa-2x fa-instagram" style="color:gray"></i>
+                                <% end %>
+                                
+                            <% else %>
+                                <i class="fab fa-2x fa-twitter" style="color:gray"></i> &nbsp;
+                                <i class="fab fa-2x fa-instagram" style="color:gray"></i>
+                            <% end %>
+					</div>
+                    </div>
+                </div><hr>
                 <p style="text-align:right;"><%= (@post.created_at + 32400 ).strftime "%Y-%m-%d %H:%M"%></p>
                 <p><cap>위 치 |</cap> <i class='bx bx-map'></i> <%= @post.address[0] %></p>
                 <p><cap>가 능 날 짜 |</cap></p>

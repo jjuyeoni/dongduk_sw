@@ -1,4 +1,3 @@
-#보람-실시간 채팅 채널
 class ConversationChannel < ApplicationCable::Channel
   def subscribed
     stream_from "conversations-#{current_user.id}"
@@ -15,6 +14,6 @@ class ConversationChannel < ApplicationCable::Channel
  
    Message.create(message_params)
     
-    
   end
 end
+

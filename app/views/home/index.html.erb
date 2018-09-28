@@ -22,7 +22,7 @@
         <ul>
           <% @badunapp.each do |a| %>
             <% @user = User.find(a.user_id) %>
-            <li><%= link_to @user.email, conversations_path(user_id: @user), remote: true, method: :post %></li>
+            <li><%= link_to @user.name, conversations_path(user_id: @user), remote: true, method: :post %></li>
           <% end %>
         </ul>
         
@@ -31,7 +31,7 @@
         <ul>
           <% @applies.each do |a| %>
             <% @user = User.find(a.partner) %>
-            <li><%= link_to @user.email, conversations_path(user_id: @user), remote: true, method: :post %></li>
+            <li><%= link_to @user.name, conversations_path(user_id: @user), remote: true, method: :post %></li>
           <% end %>
         </ul>
       </div>

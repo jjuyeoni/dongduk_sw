@@ -16,7 +16,6 @@ gem 'figaro'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
-gem 'omniauth-naver'
 
 # # 이미지 업로드
 gem 'carrierwave'

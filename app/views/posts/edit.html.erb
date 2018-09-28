@@ -35,8 +35,10 @@
   <% end %>
 
     <div class="form-group row">
-      <div class="col-md-3" style="padding-left: 0px;"><%= form.select(:category, options_for_select(['게임','코딩','언어','뷰티','운동','음악']),{}, {:class=>"form-control"})%></div>
-      <div class="col-md-9" style="padding-left: 0px;padding-right: 0px;"><%= form.text_field :title , class:"form-control", :placeholder => 'title', :style => 'display:inline'%></div>
+      <div class="col-md-3" style="padding-left: 0px;">
+          <%= form.select(:category, options_for_select(['게임','코딩','언어','뷰티','운동','음악','요리', '미술', '컴퓨터활용'],[@post.category]), {},{:class=>"form-control"})%></div>
+      <div class="col-md-9" style="padding-left: 0px;padding-right: 0px;">
+          <%= form.text_field :title , class:"form-control", :placeholder => 'title', :style => 'display:inline'%></div>
       <%= form.text_area :content , class:"form-control", size: "24x35" %>
       <div id="dox" class="table-control">
             <div class="field">
@@ -87,38 +89,15 @@ var geocoder = new daum.maps.services.Geocoder();
 
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 
-        center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        center: new daum.maps.LatLng(<%=@post.lat%>, <%=@post.lon%>), // 지도의 중심좌표
         level: 3 // 지도의 확대 레벨 
     }; 
     
 var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-if (navigator.geolocation) {
-    
-    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-    navigator.geolocation.getCurrentPosition(function(position) {
-        
-        var lat = position.coords.latitude, // 위도
-            lon = position.coords.longitude; // 경도
-        
-        document.getElementById("post_lat").value = lat;
-        document.getElementById("post_lon").value = lon;
-        
-        var locPosition = new daum.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-        
-        // 마커와 인포윈도우를 표시합니다
-        displayMarker(locPosition);
-        searchAddrFromCoords(locPosition, displayCenterInfo);
-      });
-    
-} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-    
-    var locPosition = new daum.maps.LatLng(33.450701, 126.570667);    
-        // message = 'geolocation을 사용할수 없어요..'
-        
-    displayMarker(locPosition);
-    searchAddrFromCoords(locPosition, displayCenterInfo);
-}
+displayMarker(map.getCenter());
+searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+
 // 지도에 마커와 인포윈도우를 표시하는 함수입니다
 function displayMarker(locPosition) {
     // 마커를 생성합니다

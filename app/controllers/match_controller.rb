@@ -1,40 +1,39 @@
 class MatchController < ApplicationController
   
   def index
-     @address = ['전체', '강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구', '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구']
+    @address = ['전체', '강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구', '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구']
     @time = Time.now.year
-    @category = ['게임','코딩','언어','뷰티','운동','음악']
+    @category = ['게임','코딩','언어','뷰티','운동','음악', '요리', '미술', '컴퓨터활용']
     
   end
   
   def search
      @address = ['강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구', '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구']
-    #매칭된 글 DB 초기화
+    
+    
     Matpost.where("user_id = ?", current_user.id).each do |a|
       a.destroy
     end
     
    
     
-    #먼저 해당 유저를 찾는다
-    if params[:sex] == "all" #성별이 무관일경우
+    
+    if params[:sex] == "all" 
       cookies[:sex] = "무관"
-      @users = checkSchool(User.where.not(id: current_user.id)) #학교 학번 체크 함수호출
+      @users = checkSchool(User.where.not(id: current_user.id)) 
     else #성별 선택
       cookies[:sex] = params[:sex]
-      @users = checkSchool(User.where("sex = ? AND id != ?", params[:sex], current_user.id) ) #학교 체크 함수호출
+      @users = checkSchool(User.where("sex = ? AND id != ?", params[:sex], current_user.id) ) 
     end
     
     
-    #이제 카테고리 매칭 시작
     @category = []
-    #우선 카테고리 저장
     params[:category][:category].each do |a|
       @category << a
     end 
     cookies[:category] = @category
     
-    #행정구 저장
+    
     @add = []
     if params[:address][:address].include?('전체')
       cookies[:address] = '전체'
@@ -47,7 +46,7 @@ class MatchController < ApplicationController
     end
     
     @users.each do |x|
-      x.posts.each do |y| #각 유저가 쓴 글중에서
+      x.posts.each do |y| 
       if @category.include?(y.category) && @add.include?(y.address[0])
          Matpost.create(post_id: y.id, user_id: current_user.id)
        end
@@ -55,7 +54,6 @@ class MatchController < ApplicationController
     end
   
   
-    
   
    redirect_to '/match/result'
   end
@@ -82,10 +80,10 @@ class MatchController < ApplicationController
     cookies[:st] = params[:st]
     en = params[:en].to_i + 1
     cookies[:en] = params[:en]
-    if params[:school] == "all" #학교 무관
+    if params[:school] == "all" 
         cookies[:school] = "무관"
         return users.where("sid > ? AND sid < ?", st, en)
-    elsif params[:school] == "my" #학우
+    elsif params[:school] == "my" 
         cookies[:school] = "학우"
         return users.where("school = ? AND sid > ? AND sid < ?", current_user.school, st, en)
     else #타학교
